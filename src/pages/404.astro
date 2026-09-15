@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+import styles from './index.module.css';
+---
+
+<Layout
+  title="Página no encontrada [404] — Estudio Centella"
+  description="La página a la que intentas acceder no existe o ha sido movida."
+>
+  <div class={styles.container}>
+    <section class={styles.heroBanner} style="min-height: 360px; text-align: center; align-items: center; justify-content: center;">
+      <span class={styles.heroTag}>[404] ERROR DE NAVEGACIÓN</span>
+      <h1 class={styles.heroTitle} style="max-width: 600px;">
+        Página no encontrada.
+      </h1>
+      <p style="margin-top: 16px; font-size: 14px; color: var(--text-muted);">
+        El recurso que buscas no existe o ha cambiado de dirección.
+      </p>
+      <div style="margin-top: 32px;">
+        <a href="/" style="font-family: var(--font-mono); font-size: 12px; padding: 10px 20px; border: 1px solid var(--text-main); color: var(--text-main); text-decoration: none;">
+          VOLVER AL INICIO &rarr;
+        </a>
+      </div>
+    </section>
+  </div>
+</Layout>
+
