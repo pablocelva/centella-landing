@@ -1,0 +1,52 @@
+.audioBtn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  background-color: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  padding: 4px 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.audioBtn:hover {
+  color: var(--text-main);
+  border-color: var(--border-strong);
+  background-color: var(--bg-card);
+}
+
+.audioBtn[data-active="true"] {
+  color: var(--text-main);
+  border-color: var(--border-strong);
+  background-color: var(--bg-card-hover);
+}
+
+.pulseDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--text-light);
+  display: inline-block;
+  transition: background-color var(--transition-fast);
+}
+
+.audioBtn[data-active="true"] .pulseDot {
+  background-color: var(--text-main);
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+

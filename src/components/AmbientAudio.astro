@@ -1,0 +1,179 @@
+---
+import styles from './AmbientAudio.module.css';
+---
+
+<div transition:persist="ambient-audio" style="display: inline-flex; align-items: center;">
+  <button
+    data-ambient-audio-btn
+    class={styles.audioBtn}
+    aria-label="Activar o desactivar textura ambiental"
+    title="Reproducir textura ambiental (Web Audio API)"
+  >
+    <span class={styles.pulseDot}></span>
+    <span data-ambient-audio-label>[SONIDO: OFF]</span>
+  </button>
+</div>
+
+<script is:inline>
+  (function () {
+    // 1. Initialize global audio state singleton
+    if (!window.__centellaAudioState) {
+      window.__centellaAudioState = {
+        audioCtx: null,
+        masterGain: null,
+        isPlaying: false,
+        oscillators: [],
+        lfoFilter: null,
+        lfoGain: null,
+        filter: null
+      };
+    }
+    const state = window.__centellaAudioState;
+
+    function createAmbientSynth() {
+      const win = window;
+      const AudioContextClass = win.AudioContext || win.webkitAudioContext;
+      if (!AudioContextClass) return null;
+
+      state.audioCtx = new AudioContextClass();
+      const ctx = state.audioCtx;
+
+      // Master Gain - initial gain set to zero to eliminate click
+      state.masterGain = ctx.createGain();
+      state.masterGain.gain.setValueAtTime(0.00001, ctx.currentTime);
+
+      // Low-pass BiquadFilter for warm, silky sinusoidal tone
+      state.filter = ctx.createBiquadFilter();
+      state.filter.type = 'lowpass';
+      state.filter.frequency.setValueAtTime(750, ctx.currentTime);
+      state.filter.Q.setValueAtTime(0.8, ctx.currentTime);
+
+      // LFO 1: Slow Cutoff Modulation (0.07 Hz cycle) for organic breathing texture
+      state.lfoFilter = ctx.createOscillator();
+      state.lfoFilter.frequency.setValueAtTime(0.07, ctx.currentTime);
+      const lfoFilterGain = ctx.createGain();
+      lfoFilterGain.gain.setValueAtTime(200, ctx.currentTime);
+      state.lfoFilter.connect(lfoFilterGain);
+      lfoFilterGain.connect(state.filter.frequency);
+
+      // LFO 2: Ultra slow Tremolo/Gain Modulation (0.04 Hz cycle)
+      state.lfoGain = ctx.createOscillator();
+      state.lfoGain.frequency.setValueAtTime(0.04, ctx.currentTime);
+      const lfoSubGain = ctx.createGain();
+      lfoSubGain.gain.setValueAtTime(0.03, ctx.currentTime);
+      state.lfoGain.connect(lfoSubGain);
+      lfoSubGain.connect(state.masterGain.gain);
+
+      // Ambient Frequencies (+1 Octave higher, pure sinusoidal waves):
+      // D3 (146.83Hz), C4 (261.63Hz), E4 (329.63Hz), G4 (392.00Hz), B4 (493.88Hz), E5 (659.25Hz)
+      const chordNotes = [
+        { freq: 146.83, gain: 0.18 }, // D3 Bass Root
+        { freq: 261.63, gain: 0.14 }, // C4
+        { freq: 329.63, gain: 0.12 }, // E4
+        { freq: 392.00, gain: 0.10 }, // G4
+        { freq: 493.88, gain: 0.09 }, // B4
+        { freq: 659.25, gain: 0.06 }  // E5 High Shimmering 9th
+      ];
+
+      state.oscillators = chordNotes.map(note => {
+        const osc = ctx.createOscillator();
+        const noteGain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(note.freq, ctx.currentTime);
+        noteGain.gain.setValueAtTime(note.gain, ctx.currentTime);
+
+        osc.connect(noteGain);
+        noteGain.connect(state.filter);
+        return osc;
+      });
+
+      state.filter.connect(state.masterGain);
+      state.masterGain.connect(ctx.destination);
+
+      state.oscillators.forEach(osc => osc.start(ctx.currentTime));
+      state.lfoFilter.start(ctx.currentTime);
+      state.lfoGain.start(ctx.currentTime);
+    }
+
+    function startAmbientSound() {
+      if (state.audioCtx && state.audioCtx.state === 'closed') {
+        state.audioCtx = null;
+      }
+
+      if (!state.audioCtx) {
+        createAmbientSynth();
+      }
+
+      if (state.audioCtx && state.audioCtx.state === 'suspended') {
+        state.audioCtx.resume();
+      }
+
+      if (state.masterGain && state.audioCtx) {
+        const now = state.audioCtx.currentTime;
+        state.masterGain.gain.cancelScheduledValues(now);
+        // Force absolute silence (0.00001) at exact start time to guarantee a smooth 2.5s fade-in
+        state.masterGain.gain.setValueAtTime(0.00001, now);
+        state.masterGain.gain.exponentialRampToValueAtTime(0.24, now + 2.5);
+      }
+      state.isPlaying = true;
+      updateUI();
+    }
+
+    function stopAmbientSound() {
+      if (state.masterGain && state.audioCtx) {
+        const now = state.audioCtx.currentTime;
+        state.masterGain.gain.cancelScheduledValues(now);
+        const currentGain = Math.max(0.00001, state.masterGain.gain.value);
+        state.masterGain.gain.setValueAtTime(currentGain, now);
+        // Ultra smooth 2.5s gradual fade-out
+        state.masterGain.gain.exponentialRampToValueAtTime(0.00001, now + 2.5);
+        setTimeout(() => {
+          if (!state.isPlaying && state.audioCtx && state.audioCtx.state === 'running') {
+            state.audioCtx.suspend();
+          }
+        }, 2550);
+      }
+      state.isPlaying = false;
+      updateUI();
+    }
+
+    function toggleAmbientSound() {
+      if (state.isPlaying) {
+        stopAmbientSound();
+      } else {
+        startAmbientSound();
+      }
+    }
+
+    function updateUI() {
+      const buttons = document.querySelectorAll('[data-ambient-audio-btn]');
+      const labels = document.querySelectorAll('[data-ambient-audio-label]');
+      buttons.forEach(btn => {
+        btn.dataset.active = state.isPlaying ? 'true' : 'false';
+      });
+      labels.forEach(label => {
+        label.textContent = state.isPlaying ? '[SONIDO: ON]' : '[SONIDO: OFF]';
+      });
+    }
+
+    // Event delegation on document to handle clicks across View Transitions
+    if (!window.__centellaAudioInitialized) {
+      window.__centellaAudioInitialized = true;
+
+      document.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-ambient-audio-btn]');
+        if (btn) {
+          e.stopPropagation();
+          toggleAmbientSound();
+        }
+      });
+
+      document.addEventListener('astro:after-swap', updateUI);
+      document.addEventListener('astro:page-load', updateUI);
+    }
+
+    // Always sync UI on evaluation
+    updateUI();
+  })();
+</script>

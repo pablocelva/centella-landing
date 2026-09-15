@@ -1,5 +1,6 @@
 ---
 import styles from './Header.module.css';
+import AmbientAudio from './AmbientAudio.astro';
 
 interface Props {
   currentPath?: string;
@@ -40,22 +41,26 @@ const navItems = [
       })}
     </nav>
 
-    <!-- Tablet & Mobile Hamburger Toggle Button -->
-    <button
-      id="hamburgerToggle"
-      class={styles.hamburgerBtn}
-      aria-label="Abrir menú de navegación"
-      aria-expanded="false"
-    >
-      <span class={styles.menuIcon}>
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-          <rect y="2" width="16" height="1.5" />
-          <rect y="7.25" width="16" height="1.5" />
-          <rect y="12.5" width="16" height="1.5" />
-        </svg>
-        <span id="hamburgerText">MENU</span>
-      </span>
-    </button>
+    <!-- Controls Area: Single Ambient Audio Button + Mobile Hamburger -->
+    <div class={styles.controlsArea}>
+      <AmbientAudio />
+
+      <button
+        id="hamburgerToggle"
+        class={styles.hamburgerBtn}
+        aria-label="Abrir menú de navegación"
+        aria-expanded="false"
+      >
+        <span class={styles.menuIcon}>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <rect y="2" width="16" height="1.5" />
+            <rect y="7.25" width="16" height="1.5" />
+            <rect y="12.5" width="16" height="1.5" />
+          </svg>
+          <span id="hamburgerText">MENU</span>
+        </span>
+      </button>
+    </div>
   </div>
 
   <!-- Mobile & Tablet Full Overlay Navigation Drawer -->
@@ -95,14 +100,12 @@ const navItems = [
 
     if (!toggleBtn || !overlay) return;
 
-    // Reset overlay state on page load/transition
     overlay.style.display = 'none';
     overlay.style.opacity = '0';
     overlay.style.pointerEvents = 'none';
     toggleBtn.setAttribute('aria-expanded', 'false');
     if (textLabel) textLabel.textContent = 'MENU';
 
-    // Clone button to strip old listeners
     const freshBtn = toggleBtn.cloneNode(true);
     toggleBtn.parentNode.replaceChild(freshBtn, toggleBtn);
 
@@ -147,7 +150,6 @@ const navItems = [
     });
   }
 
-  // Support both initial load and Astro ClientRouter ViewTransitions
   document.addEventListener('astro:page-load', setupHamburgerMenu);
   if (document.readyState === 'interactive' || document.readyState === 'complete') {
     setupHamburgerMenu();
