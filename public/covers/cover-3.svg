@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <rect width="600" height="600" fill="#141416"/>
+  <rect x="80" y="80" width="440" height="440" fill="none" stroke="#e5e2db" stroke-width="1.5" stroke-dasharray="8 8"/>
+  <polygon points="300,160 440,400 160,400" fill="none" stroke="#f8f7f4" stroke-width="2"/>
+  <circle cx="300" cy="320" r="30" fill="#f8f7f4"/>
+  <text x="40" y="560" font-family="monospace" font-size="18" fill="#888888" letter-spacing="4">MASTERING SUITE // VOL. 03</text>
+</svg>
+

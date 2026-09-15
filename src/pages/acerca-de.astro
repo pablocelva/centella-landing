@@ -1,0 +1,98 @@
+---
+import Layout from '../layouts/Layout.astro';
+import styles from './acerca-de.module.css';
+
+const pillars = [
+  {
+    category: "[01] PRE-PRODUCCIÓN & ESTRUCTURA",
+    items: [
+      "Análisis conceptual y armónico de cada obra",
+      "Definición de maquetas y dirección de arreglos",
+      "Planificación de sesiones de grabación",
+      "Optimización de tiempos y recursos de producción"
+    ]
+  },
+  {
+    category: "[02] INGENIERÍA & BALANCE DE MEZCLA",
+    items: [
+      "Equilibrio espectral y dinámico de alta precisión",
+      "Espacialidad estéreo e inmersión auditiva",
+      "Limpieza y procesamiento detallado de frecuencias",
+      "Revisiones colaborativas con el artista"
+    ]
+  },
+  {
+    category: "[03] MASTERIZACIÓN & OPTIMIZACIÓN",
+    items: [
+      "Control de picos y volumen para plataformas digital",
+      "Traducción impecable en múltiples sistemas de reproducción",
+      "Preparación de archivos para distribución",
+      "Formateo y entrega de másteres finales"
+    ]
+  },
+  {
+    category: "[04] ACOMPAÑAMIENTO PERSONALIZADO",
+    items: [
+      "Asesoría en distribución y lanzamiento de sencillos",
+      "Gestión de formatos para plataformas globales",
+      "Dirección artística personalizada uno a uno",
+      "Soporte continuo post-entrega"
+    ]
+  }
+];
+---
+
+<Layout
+  title="Acerca de Estudio Centella — Producción Musical en Chile"
+  description="Conoce la filosofía, flujo de trabajo y enfoque de producción musical independiente de Estudio Centella en Santiago, Chile."
+>
+  <div class={styles.container}>
+    <!-- Hero Banner Ancho Completo -->
+    <section class={styles.heroBanner} aria-labelledby="about-heading">
+      <span class={styles.tag}>[04] ACERCA DEL ESTUDIO &amp; FILOSOFÍA SONORA</span>
+      <h1 id="about-heading" class={styles.title}>
+        Espacio de creación musical enfocado en la fidelidad sonora, la sensibilidad artística y la atención dedicada a cada artista.
+      </h1>
+    </section>
+
+    <!-- Sección Split: Historia & Método -->
+    <section class={styles.splitSection} aria-label="Filosofía del estudio">
+      <article class={styles.cardBlock}>
+        <span class={styles.blockTitle}>[01] NUESTRA HISTORIA</span>
+        <h2 class={styles.heading}>Fundado en Santiago de Chile</h2>
+        <p class={styles.paragraph}>
+          Estudio Centella nace como un proyecto de producción musical independiente donde la tecnología y la sensibilidad artística conviven en equilibrio. Creemos que la gran música se logra esculpiendo el sonido con paciencia y cuidando cada detalle de la producción.
+        </p>
+      </article>
+
+      <article class={styles.cardBlock}>
+        <span class={styles.blockTitle}>[02] ENFOQUE DE TRABAJO</span>
+        <h2 class={styles.heading}>Traducción Transparente y Personalizada</h2>
+        <p class={styles.paragraph}>
+          El entorno de trabajo está diseñado para ofrecer una escucha transparente y precisa. Cada producción, mezcla y masterización es tratada con dedicación directa uno a uno para que tu música traduzca fielmente en cualquier reproductor.
+        </p>
+      </article>
+    </section>
+
+    <!-- Sección de Pilares de Trabajo -->
+    <section aria-labelledby="gear-heading">
+      <div style="margin-bottom: 24px; padding: 16px 24px; background: var(--bg-card); border: 1px solid var(--border-subtle);">
+        <span class={styles.tag}>PILARES Y ETAPAS DEL PROCESO DE PRODUCCIÓN</span>
+      </div>
+
+      <div class={styles.gearGrid}>
+        {pillars.map((group) => (
+          <article class={styles.gearCard}>
+            <h3 class={styles.gearCategory}>{group.category}</h3>
+            <ul class={styles.gearList}>
+              {group.items.map((item) => (
+                <li>&bull; {item}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>
+

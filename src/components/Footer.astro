@@ -1,0 +1,40 @@
+---
+import styles from './Footer.module.css';
+---
+
+<footer class={styles.footer}>
+  <div class={styles.inner}>
+    <div class={styles.brandCol}>
+      <span class={styles.logo}>ESTUDIO CENTELLA / CHILE</span>
+      <p class={styles.description}>
+        Estudio de producción musical, mezcla y masterización situado en Santiago, Chile.
+      </p>
+    </div>
+
+    <div>
+      <h4 class={styles.colTitle}>Navegación</h4>
+      <ul class={styles.links}>
+        <li><a href="/" class={styles.link}>[01] Inicio</a></li>
+        <li><a href="/proyectos" class={styles.link}>[02] Proyectos</a></li>
+        <li><a href="/servicios" class={styles.link}>[03] Servicios</a></li>
+        <li><a href="/acerca-de" class={styles.link}>[04] Acerca de</a></li>
+        <li><a href="/contacto" class={styles.link}>[05] Contacto</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class={styles.colTitle}>Ubicación &amp; Contacto</h4>
+      <ul class={styles.links}>
+        <li><a href="/contacto" class={styles.link}>contacto@estudiocentella.cl</a></li>
+        <li><span class={styles.link}>Santiago, Chile</span></li>
+        <li><a href="https://instagram.com/estudiocentella" target="_blank" rel="noopener noreferrer" class={styles.link}>Instagram / @estudiocentella</a></li>
+        <li><a href="https://spotify.com" target="_blank" rel="noopener noreferrer" class={styles.link}>Spotify / Studio Playlist</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class={styles.bottomBar}>
+    <span>&copy; {new Date().getFullYear()} Estudio Centella. Santiago, Chile.</span>
+    <span>Producción Musical</span>
+  </div>
+</footer>

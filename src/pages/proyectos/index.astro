@@ -1,0 +1,51 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+import styles from '../index.module.css';
+
+const allProjects = await getCollection('proyectos');
+const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout
+  title="Catálogo de Producciones Musicales — Estudio Centella"
+  description="Explora las producciones musicales, mezclas y masterizaciones realizadas en Estudio Centella."
+>
+  <div class={styles.container}>
+    <section class={styles.heroBanner} aria-labelledby="archive-heading">
+      <div>
+        <span class={styles.heroTag}>[02] CATÁLOGO COMPLETO DE PRODUCCIONES</span>
+        <h1 id="archive-heading" class={styles.heroTitle}>
+          Álbumes, EPs y sencillos producidos, mezclados y masterizados en el estudio.
+        </h1>
+      </div>
+      <div class={styles.heroMeta}>
+        <span>DISCOGRAFÍA [{sortedProjects.length}]</span>
+        <span>&mdash;</span>
+        <span>2024 &ndash; 2026</span>
+      </div>
+    </section>
+
+    <section aria-labelledby="grid-heading">
+      <h2 id="grid-heading" class="sr-only" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
+        Lista de canciones y producciones
+      </h2>
+      <div class={styles.projectsStack}>
+        {sortedProjects.map((proyecto) => (
+          <ProjectCard
+            id={proyecto.id}
+            title={proyecto.data.title}
+            artist={proyecto.data.artist}
+            year={proyecto.data.year}
+            category={proyecto.data.category}
+            coverImage={proyecto.data.coverImage}
+            description={proyecto.data.description}
+            serviceBadges={proyecto.data.serviceBadges}
+            streamingLinks={proyecto.data.streamingLinks}
+          />
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>

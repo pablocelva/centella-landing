@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+import styles from './index.module.css';
+
+const allProjects = await getCollection('proyectos');
+const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout
+  title="Estudio Centella — Producción Musical & Mezcla en Chile"
+  description="Estudio de producción musical, mezcla, masterización estéreo/stem y edición de audio en Santiago, Chile."
+>
+  <div class={styles.container}>
+    <!-- Bloque 1 (Wireframe Home.png): Banner Superior Ancho Completo -->
+    <section class={styles.heroBanner} aria-labelledby="hero-heading">
+      <div>
+        <span class={styles.heroTag}>[01] ESTUDIO DE PRODUCCIÓN MUSICAL &amp; MEZCLA</span>
+        <h1 id="hero-heading" class={styles.heroTitle}>
+          Sonido orgánico, calidez y precisión técnica para tus producciones discográficas.
+        </h1>
+      </div>
+      <div class={styles.heroMeta}>
+        <span>ESTUDIO CENTELLA</span>
+        <span>&mdash;</span>
+        <span>SANTIAGO, CHILE / DISPONIBILIDAD GLOBAL</span>
+      </div>
+    </section>
+
+    <!-- Bloque 2 (Wireframe Home.png): Barra Horizontal de Introducción -->
+    <section class={styles.introBar} aria-label="Manifiesto del Estudio">
+      <p class={styles.introText}>
+        Producciones con identidad sonora y alto impacto emotivo.
+      </p>
+      <span class={styles.introMeta}>PRODUCCIONES RECIENTES [{sortedProjects.length}]</span>
+    </section>
+
+    <!-- Bloque 3 (Wireframe Home.png): Lista de Proyectos Musicales -->
+    <section aria-labelledby="projects-heading">
+      <h2 id="projects-heading" class="sr-only" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
+        Producciones Musicales Destacadas
+      </h2>
+      <div class={styles.projectsStack}>
+        {sortedProjects.map((proyecto) => (
+          <ProjectCard
+            id={proyecto.id}
+            title={proyecto.data.title}
+            artist={proyecto.data.artist}
+            year={proyecto.data.year}
+            category={proyecto.data.category}
+            coverImage={proyecto.data.coverImage}
+            description={proyecto.data.description}
+            serviceBadges={proyecto.data.serviceBadges}
+            streamingLinks={proyecto.data.streamingLinks}
+          />
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>

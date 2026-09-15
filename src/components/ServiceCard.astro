@@ -1,0 +1,31 @@
+---
+import styles from './ServiceCard.module.css';
+
+interface Props {
+  id?: string;
+  number: string;
+  title: string;
+  summary: string;
+  tagline: string;
+  details: string[];
+}
+
+const { id, number, title, summary, tagline, details } = Astro.props;
+---
+
+<article class={styles.card} id={id}>
+  <div class={styles.header}>
+    <span class={styles.number}>[{number}]</span>
+    <span class={styles.tagline}>{tagline}</span>
+  </div>
+  <h3 class={styles.title}>{title}</h3>
+  <p class={styles.summary}>{summary}</p>
+  <ul class={styles.detailsList}>
+    {details.map(item => (
+      <li class={styles.detailItem}>
+        <span class={styles.bullet}></span>
+        <span>{item}</span>
+      </li>
+    ))}
+  </ul>
+</article>

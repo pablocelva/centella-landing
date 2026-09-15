@@ -1,0 +1,96 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import { getCollection } from 'astro:content';
+import styles from './servicios.module.css';
+
+const allServices = await getCollection('servicios');
+const sortedServices = allServices.sort((a, b) => a.data.order - b.data.order);
+
+const pair1 = sortedServices.slice(0, 2);
+const pair2 = sortedServices.slice(2, 4);
+const pair3 = sortedServices.slice(4, 6);
+---
+
+<Layout
+  title="Servicios de Producción Musical — Estudio Centella"
+  description="Servicios profesionales de producción musical, mezcla, masterización estéreo/stem, edición vocal y consultoría acústica."
+>
+  <div class={styles.container}>
+    <!-- Hero Banner Ancho Completo -->
+    <section class={styles.heroBanner} aria-labelledby="services-heading">
+      <span class={styles.tag}>[03] SERVICIOS DE PRODUCCIÓN &amp; INGENIERÍA DE SONIDO</span>
+      <h1 id="services-heading" class={styles.title}>
+        Servicios integrales de producción y procesamiento de audio para producciones discográficas.
+      </h1>
+    </section>
+
+    <!-- Par 1 de Servicios (Rejilla de 2 Columnas) -->
+    <section class={styles.pairGrid} aria-label="Grupo de servicios 1">
+      {pair1.map(servicio => (
+        <ServiceCard
+          id={servicio.id}
+          number={servicio.data.number}
+          title={servicio.data.title}
+          summary={servicio.data.summary}
+          tagline={servicio.data.tagline}
+          details={servicio.data.details}
+        />
+      ))}
+    </section>
+
+    <!-- Banner Ancho Completo 1 -->
+    <div class={styles.fullBanner}>
+      <span class={styles.fullBannerText}>
+        FLUJO DE TRABAJO EN ESTUDIO &mdash; Pre-producción técnica, sesiones de captura, balance de mezcla y másteres optimizados para plataformas digitales.
+      </span>
+      <span class={styles.fullBannerMeta}>[01] TRABAJO PROFESIONAL</span>
+    </div>
+
+    <!-- Par 2 de Servicios (Rejilla de 2 Columnas) -->
+    <section class={styles.pairGrid} aria-label="Grupo de servicios 2">
+      {pair2.map(servicio => (
+        <ServiceCard
+          id={servicio.id}
+          number={servicio.data.number}
+          title={servicio.data.title}
+          summary={servicio.data.summary}
+          tagline={servicio.data.tagline}
+          details={servicio.data.details}
+        />
+      ))}
+    </section>
+
+    <!-- Banner Ancho Completo 2 -->
+    <div class={styles.fullBanner}>
+      <span class={styles.fullBannerText}>
+        ESTÁNDARES DE VOLUMEN &mdash; Másteres en 24-bit/96kHz con medición estricta True Peak y entrega de archivos finales para distribución.
+      </span>
+      <span class={styles.fullBannerMeta}>[02] CERO DISTORSIÓN</span>
+    </div>
+
+    <!-- Par 3 de Servicios (Rejilla de 2 Columnas) -->
+    <section class={styles.pairGrid} aria-label="Grupo de servicios 3">
+      {pair3.map(servicio => (
+        <ServiceCard
+          id={servicio.id}
+          number={servicio.data.number}
+          title={servicio.data.title}
+          summary={servicio.data.summary}
+          tagline={servicio.data.tagline}
+          details={servicio.data.details}
+        />
+      ))}
+    </section>
+
+    <!-- Banner Ancho Completo 3 / CTA -->
+    <div class={styles.fullBanner}>
+      <span class={styles.fullBannerText}>
+        ¿TIENES UN PROYECTO O ÁLBUM EN PUERTA? Agenda una sesión de evaluación de tu material con nuestro equipo.
+      </span>
+      <a href="/contacto" class={styles.ctaLink}>
+        AGENDAR SESIÓN &rarr;
+      </a>
+    </div>
+  </div>
+</Layout>

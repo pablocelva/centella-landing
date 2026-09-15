@@ -1,0 +1,190 @@
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 24px;
+  position: relative;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+  min-height: 220px;
+}
+
+.card:hover {
+  border-color: var(--border-strong);
+  background-color: var(--bg-card-hover);
+}
+
+/* Left Column: Artwork Image */
+.imageWrapper {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  background-color: var(--bg-dark);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  position: relative;
+}
+
+.imageLink {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.coverImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--transition-smooth);
+}
+
+.card:hover .coverImage {
+  transform: scale(1.04);
+}
+
+/* Right Column: Content */
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.titleArea {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.artist {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-light);
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.titleLink {
+  color: inherit;
+  transition: color var(--transition-fast);
+}
+
+.titleLink:hover {
+  color: var(--text-muted);
+}
+
+.metaBadge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+.description {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Streaming Links Area */
+.streamingArea {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.streamingLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-light);
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+
+.streamLink {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-main);
+  background-color: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  padding: 4px 10px;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+}
+
+.streamLink:hover {
+  border-color: var(--text-main);
+  background-color: var(--text-main);
+  color: var(--bg-canvas);
+}
+
+/* Service Badges Area (Bottom) */
+.badgesRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border-subtle);
+  align-items: center;
+}
+
+.badgesLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-light);
+  text-transform: uppercase;
+}
+
+.serviceBadge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-main);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  padding: 4px 10px;
+  transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.serviceBadge:hover {
+  background-color: var(--text-main);
+  color: var(--bg-canvas);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 720px) {
+  .card {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .imageWrapper {
+    height: 240px;
+    min-height: auto;
+  }
+}

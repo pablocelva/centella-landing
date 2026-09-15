@@ -1,0 +1,213 @@
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.backLink {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-light);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color var(--transition-fast);
+}
+
+.backLink:hover {
+  color: var(--text-main);
+}
+
+/* Wireframe Block: Asymmetric 2-column Layout (Proyecto.png) */
+.mainSplit {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.leftStack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Stacked Block 1: Metadata */
+.metaBlock {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.categoryBadge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metaLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-light);
+  text-transform: uppercase;
+}
+
+.metaValue {
+  font-size: 13px;
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.deliverablesList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Stacked Block 2: Description / Concept */
+.conceptBlock {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.blockLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-light);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.description {
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.7;
+}
+
+/* Right Tall Block: Showcase Canvas (Proyecto.png) */
+.showcaseBlock {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 480px;
+  position: relative;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(20, 20, 20, 0.02) 10px,
+    rgba(20, 20, 20, 0.02) 20px
+  );
+}
+
+.showcaseTag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-light);
+  letter-spacing: 0.1em;
+}
+
+.showcaseCenter {
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.showcaseTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 4vw, 36px);
+  font-style: italic;
+  color: var(--text-main);
+  line-height: 1.3;
+}
+
+.showcaseFooter {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 16px;
+}
+
+/* Wireframe Bottom Row: 3 Horizontal Spec Cards (Proyecto.png) */
+.specsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.specCard {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.specLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.specValue {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+@media (max-width: 860px) {
+  .mainSplit {
+    grid-template-columns: 1fr;
+  }
+  .specsRow {
+    grid-template-columns: 1fr;
+  }
+}
+

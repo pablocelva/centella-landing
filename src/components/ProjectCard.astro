@@ -1,0 +1,107 @@
+---
+import styles from './ProjectCard.module.css';
+
+interface ServiceBadge {
+  slug: string;
+  label: string;
+}
+
+interface StreamingLink {
+  platform: string;
+  url: string;
+}
+
+interface Props {
+  id: string;
+  title: string;
+  artist: string;
+  year: string;
+  category: string;
+  coverImage: string;
+  description: string;
+  serviceBadges: ServiceBadge[];
+  streamingLinks: StreamingLink[];
+}
+
+const {
+  id,
+  title,
+  artist,
+  year,
+  category,
+  coverImage,
+  description,
+  serviceBadges,
+  streamingLinks,
+} = Astro.props;
+---
+
+<article class={styles.card}>
+  <!-- Left Column: Album Cover Artwork Image -->
+  <div class={styles.imageWrapper}>
+    <a
+      href={`/proyectos/${id}`}
+      class={styles.imageLink}
+      aria-label={`Ver detalle de la producción ${title} por ${artist}`}
+    >
+      <img
+        src={coverImage}
+        alt={`Carátula de ${title} por ${artist}`}
+        class={styles.coverImage}
+        loading="lazy"
+      />
+    </a>
+  </div>
+
+  <!-- Right Column: Description, Streaming Links & Service Badges -->
+  <div class={styles.content}>
+    <div>
+      <div class={styles.headerRow}>
+        <div class={styles.titleArea}>
+          <span class={styles.artist}>{artist}</span>
+          <h3 class={styles.title}>
+            <a href={`/proyectos/${id}`} class={styles.titleLink}>
+              {title}
+            </a>
+          </h3>
+        </div>
+        <span class={styles.metaBadge}>{year} &bull; {category}</span>
+      </div>
+
+      <p class={styles.description}>{description}</p>
+    </div>
+
+    <!-- Streaming Platform Links -->
+    {streamingLinks.length > 0 && (
+      <div class={styles.streamingArea}>
+        <span class={styles.streamingLabel}>ESCUCHAR:</span>
+        {streamingLinks.map((link) => (
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class={styles.streamLink}
+          >
+            [{link.platform}]
+          </a>
+        ))}
+      </div>
+    )}
+
+    <!-- Service Badges (Redirecting to Service) -->
+    {serviceBadges.length > 0 && (
+      <div class={styles.badgesRow}>
+        <span class={styles.badgesLabel}>SERVICIOS:</span>
+        {serviceBadges.map((badge) => (
+          <a
+            href={`/servicios#${badge.slug}`}
+            class={styles.serviceBadge}
+            title={`Ver información sobre el servicio de ${badge.label}`}
+          >
+            {badge.label} &rarr;
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</article>

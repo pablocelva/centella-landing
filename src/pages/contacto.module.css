@@ -1,0 +1,203 @@
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.heroBanner {
+  width: 100%;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--text-light);
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 32px;
+}
+
+/* Form Styling */
+.formCard {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-main);
+  text-transform: uppercase;
+}
+
+.input, .select, .textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--text-main);
+  transition: border-color var(--transition-fast), outline var(--transition-fast);
+}
+
+.input:focus, .select:focus, .textarea:focus {
+  border-color: var(--text-main);
+  outline: none;
+}
+
+.textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.submitBtn {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  padding: 14px 28px;
+  background-color: var(--text-main);
+  color: var(--bg-canvas);
+  border: 1px solid var(--text-main);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+  align-self: flex-start;
+  text-transform: uppercase;
+}
+
+.submitBtn:hover {
+  background-color: transparent;
+  color: var(--text-main);
+}
+
+/* Sidebar Social & Copy Block */
+.sidebarCard {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sectionHeader {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-light);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 8px;
+}
+
+.socialList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.socialItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  text-decoration: none;
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.socialItem:hover {
+  border-color: var(--text-main);
+  background-color: var(--bg-card-hover);
+}
+
+.iconGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.svgIcon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.copyBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background-color: var(--text-main);
+  color: var(--bg-canvas);
+  border: 1px solid var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+  position: relative;
+}
+
+.copyBtn:hover {
+  opacity: 0.9;
+}
+
+.toast {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-main);
+  background-color: var(--accent-stone);
+  padding: 8px 12px;
+  border: 1px solid var(--border-strong);
+  margin-top: 8px;
+  display: none;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.toast.show {
+  display: block;
+}
+
+@media (max-width: 840px) {
+  .contactGrid {
+    grid-template-columns: 1fr;
+  }
+}
+

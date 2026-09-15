@@ -1,0 +1,115 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+import styles from './proyecto.module.css';
+
+export async function getStaticPaths() {
+  const proyectos = await getCollection('proyectos');
+  return proyectos.map((proyecto) => ({
+    params: { slug: proyecto.id },
+    props: { proyecto },
+  }));
+}
+
+const { proyecto } = Astro.props;
+const { data } = proyecto;
+const { Content } = await render(proyecto);
+---
+
+<Layout
+  title={`${data.title} por ${data.artist} — Estudio Centella`}
+  description={data.description}
+  type="article"
+>
+  <div class={styles.container}>
+    <div>
+      <a href="/proyectos" class={styles.backLink}>
+        &larr; VOLVER AL CATÁLOGO DE PRODUCCIONES
+      </a>
+    </div>
+
+    <!-- Estructura Asimétrica de 2 Columnas (Wireframe Proyecto.png) -->
+    <section class={styles.mainSplit} aria-label="Detalles de la producción musical">
+      <!-- Columna Izquierda: 2 Bloques Apilados -->
+      <div class={styles.leftStack}>
+        <!-- Bloque Apilado 1: Metadatos & Streaming Links -->
+        <article class={styles.metaBlock}>
+          <span class={styles.categoryBadge}>{data.category} &bull; {data.year}</span>
+          <h1 class={styles.title}>{data.title}</h1>
+          <p style="font-size: 15px; color: var(--text-main); font-family: var(--font-mono); font-weight: 600;">
+            ARTISTA: {data.artist}
+          </p>
+
+          <!-- Streaming Links -->
+          <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-subtle);">
+            <span class={styles.metaLabel} style="display: block; margin-bottom: 8px;">ESCUCHAR EN PLATAFORMAS</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              {data.streamingLinks.map((link: { platform: string; url: string }) => (
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="font-family: var(--font-mono); font-size: 11px; color: var(--text-main); background: var(--bg-canvas); border: 1px solid var(--border-subtle); padding: 4px 10px;"
+                >
+                  [{link.platform}] &rarr;
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- Service Badges -->
+          <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border-subtle);">
+            <span class={styles.metaLabel} style="display: block; margin-bottom: 8px;">SERVICIOS PRESTADOS</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              {data.serviceBadges.map((badge: { slug: string; label: string }) => (
+                <a
+                  href={`/servicios#${badge.slug}`}
+                  style="font-family: var(--font-mono); font-size: 11px; color: var(--text-main); border: 1px solid var(--border-strong); padding: 3px 8px; text-decoration: none;"
+                >
+                  {badge.label} &rarr;
+                </a>
+              ))}
+            </div>
+          </div>
+        </article>
+
+        <!-- Bloque Apilado 2: Descripción y Contenido Markdown -->
+        <article class={styles.conceptBlock}>
+          <span class={styles.blockLabel}>[02] RESEÑA DE PRODUCCIÓN</span>
+          <p class={styles.description}>{data.description}</p>
+          <div style="margin-top: 16px; font-size: 14px; color: var(--text-muted); line-height: 1.7;">
+            <Content />
+          </div>
+        </article>
+      </div>
+
+      <!-- Columna Derecha: Bloque Alto de Arte & Visualización (Wireframe Proyecto.png) -->
+      <article class={styles.showcaseBlock}>
+        <span class={styles.showcaseTag}>[03] CARÁTULA OFICIAL // ARTWORK</span>
+        
+        <div style="margin: 20px 0; border: 1px solid var(--border-subtle); overflow: hidden; max-width: 380px; width: 100%; align-self: center;">
+          <img
+            src={data.coverImage}
+            alt={`Arte de portada para ${data.title}`}
+            style="width: 100%; height: auto; display: block;"
+          />
+        </div>
+
+        <div class={styles.showcaseFooter}>
+          <span>{data.artist}</span>
+          <span>ESTUDIO CENTELLA // {data.year}</span>
+        </div>
+      </article>
+    </section>
+
+    <!-- Fila Inferior (Wireframe Proyecto.png): 3 Tarjetas de Especificaciones -->
+    <section class={styles.specsRow} aria-label="Ficha técnica de audio">
+      {data.specs.map((spec: { label: string; value: string }, i: number) => (
+        <article class={styles.specCard}>
+          <span class={styles.specLabel}>AUDIO SPEC [0{i + 1}] // {spec.label}</span>
+          <span class={styles.specValue}>{spec.value}</span>
+        </article>
+      ))}
+    </section>
+  </div>
+</Layout>

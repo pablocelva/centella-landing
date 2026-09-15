@@ -1,0 +1,132 @@
+---
+import styles from './Header.module.css';
+
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+
+const navItems = [
+  { href: '/', label: '[01] INICIO' },
+  { href: '/proyectos', label: '[02] PROYECTOS' },
+  { href: '/servicios', label: '[03] SERVICIOS' },
+  { href: '/acerca-de', label: '[04] ACERCA DE' },
+  { href: '/contacto', label: '[05] CONTACTO' },
+];
+---
+
+<header class={styles.header}>
+  <div class={styles.inner}>
+    <a href="/" class={styles.brand}>
+      <span class={styles.badge}>ESTUDIO</span>
+      CENTELLA
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class={styles.desktopNav} aria-label="Navegación principal en escritorio">
+      {navItems.map(item => {
+        const isActive = item.href === '/' 
+          ? currentPath === '/' 
+          : currentPath.startsWith(item.href);
+        return (
+          <a
+            href={item.href}
+            class:list={[styles.link, { [styles.active]: isActive }]}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+    </nav>
+
+    <!-- Tablet & Mobile Hamburger Toggle Button -->
+    <button
+      id="hamburgerToggle"
+      class={styles.hamburgerBtn}
+      aria-label="Abrir menú de navegación"
+      aria-expanded="false"
+    >
+      <span class={styles.menuIcon}>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+          <rect y="2" width="16" height="1.5" />
+          <rect y="7.25" width="16" height="1.5" />
+          <rect y="12.5" width="16" height="1.5" />
+        </svg>
+        <span id="hamburgerText">MENU</span>
+      </span>
+    </button>
+  </div>
+
+  <!-- Mobile & Tablet Full Overlay Navigation Drawer -->
+  <div id="mobileOverlay" class={styles.mobileOverlay}>
+    <nav aria-label="Navegación en dispositivos móviles">
+      <ul class={styles.mobileNavList}>
+        {navItems.map(item => {
+          const isActive = item.href === '/' 
+            ? currentPath === '/' 
+            : currentPath.startsWith(item.href);
+          return (
+            <li>
+              <a
+                href={item.href}
+                class:list={[styles.mobileLink, { [styles.mobileActive]: isActive }]}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+
+    <div class={styles.mobileFooter}>
+      <span>ESTUDIO CENTELLA &bull; SANTIAGO, CHILE</span>
+      <span>2026</span>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleBtn = document.getElementById('hamburgerToggle');
+    const overlay = document.getElementById('mobileOverlay');
+    const textLabel = document.getElementById('hamburgerText');
+    let isOpen = false;
+
+    if (toggleBtn && overlay) {
+      toggleBtn.addEventListener('click', () => {
+        isOpen = !isOpen;
+        if (isOpen) {
+          overlay.style.display = 'flex';
+          overlay.style.opacity = '1';
+          overlay.style.pointerEvents = 'auto';
+          toggleBtn.setAttribute('aria-expanded', 'true');
+          if (textLabel) textLabel.textContent = 'CERRAR';
+        } else {
+          overlay.style.opacity = '0';
+          overlay.style.pointerEvents = 'none';
+          setTimeout(() => {
+            overlay.style.display = 'none';
+          }, 200);
+          toggleBtn.setAttribute('aria-expanded', 'false');
+          if (textLabel) textLabel.textContent = 'MENU';
+        }
+      });
+
+      const links = overlay.querySelectorAll('a');
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          isOpen = false;
+          overlay.style.opacity = '0';
+          overlay.style.pointerEvents = 'none';
+          setTimeout(() => {
+            overlay.style.display = 'none';
+          }, 200);
+          toggleBtn.setAttribute('aria-expanded', 'false');
+          if (textLabel) textLabel.textContent = 'MENU';
+        });
+      });
+    }
+  });
+</script>
