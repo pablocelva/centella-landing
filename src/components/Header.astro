@@ -88,45 +88,70 @@ const navItems = [
 </header>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  function setupHamburgerMenu() {
     const toggleBtn = document.getElementById('hamburgerToggle');
     const overlay = document.getElementById('mobileOverlay');
     const textLabel = document.getElementById('hamburgerText');
+
+    if (!toggleBtn || !overlay) return;
+
+    // Reset overlay state on page load/transition
+    overlay.style.display = 'none';
+    overlay.style.opacity = '0';
+    overlay.style.pointerEvents = 'none';
+    toggleBtn.setAttribute('aria-expanded', 'false');
+    if (textLabel) textLabel.textContent = 'MENU';
+
+    // Clone button to strip old listeners
+    const freshBtn = toggleBtn.cloneNode(true);
+    toggleBtn.parentNode.replaceChild(freshBtn, toggleBtn);
+
     let isOpen = false;
 
-    if (toggleBtn && overlay) {
-      toggleBtn.addEventListener('click', () => {
-        isOpen = !isOpen;
-        if (isOpen) {
-          overlay.style.display = 'flex';
+    freshBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      isOpen = !isOpen;
+      const currentLabel = document.getElementById('hamburgerText');
+      if (isOpen) {
+        overlay.style.display = 'flex';
+        requestAnimationFrame(() => {
           overlay.style.opacity = '1';
           overlay.style.pointerEvents = 'auto';
-          toggleBtn.setAttribute('aria-expanded', 'true');
-          if (textLabel) textLabel.textContent = 'CERRAR';
-        } else {
-          overlay.style.opacity = '0';
-          overlay.style.pointerEvents = 'none';
-          setTimeout(() => {
-            overlay.style.display = 'none';
-          }, 200);
-          toggleBtn.setAttribute('aria-expanded', 'false');
-          if (textLabel) textLabel.textContent = 'MENU';
-        }
-      });
-
-      const links = overlay.querySelectorAll('a');
-      links.forEach(link => {
-        link.addEventListener('click', () => {
-          isOpen = false;
-          overlay.style.opacity = '0';
-          overlay.style.pointerEvents = 'none';
-          setTimeout(() => {
-            overlay.style.display = 'none';
-          }, 200);
-          toggleBtn.setAttribute('aria-expanded', 'false');
-          if (textLabel) textLabel.textContent = 'MENU';
         });
+        freshBtn.setAttribute('aria-expanded', 'true');
+        if (currentLabel) currentLabel.textContent = 'CERRAR';
+      } else {
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+        setTimeout(() => {
+          overlay.style.display = 'none';
+        }, 200);
+        freshBtn.setAttribute('aria-expanded', 'false');
+        if (currentLabel) currentLabel.textContent = 'MENU';
+      }
+    });
+
+    const links = overlay.querySelectorAll('a');
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        isOpen = false;
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+        setTimeout(() => {
+          overlay.style.display = 'none';
+        }, 200);
+        freshBtn.setAttribute('aria-expanded', 'false');
+        const currentLabel = document.getElementById('hamburgerText');
+        if (currentLabel) currentLabel.textContent = 'MENU';
       });
-    }
-  });
+    });
+  }
+
+  // Support both initial load and Astro ClientRouter ViewTransitions
+  document.addEventListener('astro:page-load', setupHamburgerMenu);
+  if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    setupHamburgerMenu();
+  } else {
+    document.addEventListener('DOMContentLoaded', setupHamburgerMenu);
+  }
 </script>

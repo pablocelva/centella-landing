@@ -20,7 +20,7 @@ const currentPath = Astro.url.pathname;
 <html lang="es">
   <head>
     <SeoMeta title={title} description={description} type={type} />
-    <ClientRouter />
+    <ClientRouter fallback="animate" />
   </head>
   <body>
     <div class={styles.layout}>
@@ -32,4 +32,3 @@ const currentPath = Astro.url.pathname;
     </div>
   </body>
 </html>
-
