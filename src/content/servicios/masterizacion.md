@@ -9,6 +9,7 @@ details:
   - "Archivos DDP para fabricación y másteres HI-RES 24-bit"
   - "Revisión de traducción en sistemas múltiples de monitoreo"
 order: 3
+active: false
 ---
 
 Garantizamos que tu música traduzca con máxima fidelidad en audífonos, autos, sistemas de club y servicios digitales, respetando los estándares de volumen internacionales.

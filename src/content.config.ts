@@ -35,6 +35,7 @@ const servicios = defineCollection({
     summary: z.string(),
     details: z.array(z.string()),
     tagline: z.string(),
+    active: z.boolean().default(true),
     order: z.number().default(1)
   })
 });

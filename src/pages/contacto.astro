@@ -2,12 +2,12 @@
 import Layout from '../layouts/Layout.astro';
 import styles from './contacto.module.css';
 
-const contactEmail = "contacto@estudiocentella.cl";
+const contactEmail = "acaballerogonz@gmail.com";
 ---
 
 <Layout
   title="Contacto & Reservas — Estudio Centella Chile"
-  description="Ponte en contacto con Estudio Centella en Santiago de Chile para presupuestos de producción musical, mezcla, masterización y grabación."
+  description="Ponte en contacto con Estudio Centella en Santiago de Chile para presupuestos de producción musical, mezcla y grabación."
 >
   <div class={styles.container}>
     <!-- Hero Banner Ancho Completo -->
@@ -42,7 +42,6 @@ const contactEmail = "contacto@estudiocentella.cl";
                 <option value="" disabled selected>Selecciona un servicio...</option>
                 <option value="produccion">Producción Musical Integral</option>
                 <option value="mezcla">Mezcla de Audio</option>
-                <option value="masterizacion">Masterización Estéreo / Stem</option>
                 <option value="edicion">Edición &amp; Limpieza Vocal</option>
                 <option value="consultoria">Consultoría de Sonido</option>
                 <option value="grabacion">Grabación en Estudio (Santiago)</option>
@@ -65,7 +64,7 @@ const contactEmail = "contacto@estudiocentella.cl";
       <aside class={styles.sidebarCard}>
         <h2 class={styles.sectionHeader}>[02] DIRECCIÓN DE CORREO &amp; REDES</h2>
 
-        <!-- Botón para copiar Gmail / Email al clipboard -->
+        <!-- Botón para copiar Gmail / Email al portapapeles -->
         <div>
           <button id="copyEmailBtn" class={styles.copyBtn} title="Haz clic para copiar el correo electrónico al portapapeles">
             <span class={styles.iconGroup}>
@@ -73,7 +72,7 @@ const contactEmail = "contacto@estudiocentella.cl";
               <svg class={styles.svgIcon} viewBox="0 0 24 24">
                 <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
               </svg>
-              <span>{contactEmail}</span>
+              <span>Correo Electrónico</span>
             </span>
             <span>COPIAR</span>
           </button>
@@ -84,7 +83,18 @@ const contactEmail = "contacto@estudiocentella.cl";
 
         <!-- Lista de Redes Sociales con Iconos SVG -->
         <div class={styles.socialList}>
-          <a href="https://instagram.com/estudiocentella" target="_blank" rel="noopener noreferrer" class={styles.socialItem}>
+          <a href="https://wa.me/+56950319736" target="_blank" rel="noopener noreferrer" class={styles.socialItem}>
+            <span class={styles.iconGroup}>
+              <!-- WhatsApp SVG -->
+              <svg class={styles.svgIcon} viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347m-5.421 7.461c-1.852 0-3.601-.5-5.116-1.371l-.367-.213-3.801 1.003 1.016-3.705-.234-.376c-.958-1.536-1.464-3.328-1.464-5.166 0-5.32 4.329-9.649 9.65-9.649 2.58 0 5.005 1.004 6.829 2.829 1.825 1.824 2.829 4.25 2.829 6.829 0 5.322-4.329 9.65-9.648 9.65M12 0C5.373 0 0 5.373 0 12c0 2.117.553 4.105 1.517 5.834L0 24l6.328-1.66A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0"/>
+              </svg>
+              <span>WHATSAPP</span>
+            </span>
+            <span>Contacto Directo</span>
+          </a>
+
+          <a href="https://instagram.com/centellamusica" target="_blank" rel="noopener noreferrer" class={styles.socialItem}>
             <span class={styles.iconGroup}>
               <!-- Instagram SVG -->
               <svg class={styles.svgIcon} viewBox="0 0 24 24">
@@ -92,21 +102,21 @@ const contactEmail = "contacto@estudiocentella.cl";
               </svg>
               <span>INSTAGRAM</span>
             </span>
-            <span>@estudiocentella</span>
+            <span>@centellamusica</span>
           </a>
 
-          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class={styles.socialItem}>
+          <a href="https://www.youtube.com/@Centellamusica" target="_blank" rel="noopener noreferrer" class={styles.socialItem}>
             <span class={styles.iconGroup}>
               <!-- YouTube SVG -->
               <svg class={styles.svgIcon} viewBox="0 0 24 24">
-                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-              </svg>
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24
+  12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
               <span>YOUTUBE</span>
             </span>
-            <span>Estudio Centella</span>
+            <span>Centella Música</span>
           </a>
 
-          <a href="https://spotify.com" target="_blank" rel="noopener noreferrer" class={styles.socialItem}>
+          <a href="https://open.spotify.com/playlist/4BKpFNaMTqVpZTgHDjscBo?si=90_AfC_gT_in0xqiOaKe0g&pi=qTD2sv9tRyi2h&nd=1&dlsi=015ac77f1ae94e3c" target="_blank" rel="noopener noreferrer" class={styles.socialItem}>
             <span class={styles.iconGroup}>
               <!-- Spotify SVG -->
               <svg class={styles.svgIcon} viewBox="0 0 24 24">
@@ -114,7 +124,7 @@ const contactEmail = "contacto@estudiocentella.cl";
               </svg>
               <span>SPOTIFY</span>
             </span>
-            <span>Playlist Oficial</span>
+            <span>Playlist Portafolio</span>
           </a>
         </div>
       </aside>
@@ -123,7 +133,7 @@ const contactEmail = "contacto@estudiocentella.cl";
 </Layout>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  function setupContactoEvents() {
     const btn = document.getElementById('copyEmailBtn');
     const toast = document.getElementById('copyToast');
     const form = document.getElementById('contactForm');
@@ -138,14 +148,21 @@ const contactEmail = "contacto@estudiocentella.cl";
     if (btn && toast) {
       btn.addEventListener('click', () => {
         navigator.clipboard.writeText('contacto@estudiocentella.cl').then(() => {
-          toast.classList.add('_show_42n51_1');
+          toast.style.display = 'block';
           setTimeout(() => {
-            toast.classList.remove('_show_42n51_1');
+            toast.style.display = 'none';
           }, 3000);
         }).catch(err => {
           console.error('Error al copiar correo:', err);
         });
       });
     }
-  });
+  }
+
+  document.addEventListener('astro:page-load', setupContactoEvents);
+  if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    setupContactoEvents();
+  } else {
+    document.addEventListener('DOMContentLoaded', setupContactoEvents);
+  }
 </script>
