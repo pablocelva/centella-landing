@@ -1,29 +1,42 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
+import ProjectFilter from '../../components/ProjectFilter.astro';
 import { getCollection } from 'astro:content';
 import styles from '../index.module.css';
 
 const allProjects = await getCollection('proyectos');
-const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
+const sortedProjects = allProjects.sort((a, b) => {
+  const yearA = parseInt(a.data.year, 10) || 0;
+  const yearB = parseInt(b.data.year, 10) || 0;
+  if (yearB !== yearA) {
+    return yearB - yearA; // Most recent year first
+  }
+  return a.data.order - b.data.order;
+});
+
+const years = sortedProjects.map(p => parseInt(p.data.year, 10)).filter(y => !isNaN(y));
+const minYear = years.length > 0 ? Math.min(...years) : 2020;
+const maxYear = years.length > 0 ? Math.max(...years) : new Date().getFullYear();
+const yearRange = minYear === maxYear ? `${minYear}` : `${minYear} \u2013 ${maxYear}`;
 ---
 
 <Layout
   title="Catálogo de Producciones Musicales — Estudio Centella"
-  description="Explora las producciones musicales, mezclas y masterizaciones realizadas en Estudio Centella."
+  description="Explora las producciones musicales, mezclas y grabaciones realizadas en Estudio Centella."
 >
   <div class={styles.container}>
     <section class={styles.heroBanner} aria-labelledby="archive-heading">
       <div>
         <span class={styles.heroTag}>[02] CATÁLOGO COMPLETO DE PRODUCCIONES</span>
         <h1 id="archive-heading" class={styles.heroTitle}>
-          Álbumes, EPs y sencillos producidos, mezclados y masterizados en el estudio.
+          Álbumes, EPs y sencillos producidos, mezclados y grabados en el estudio.
         </h1>
       </div>
       <div class={styles.heroMeta}>
         <span>DISCOGRAFÍA [{sortedProjects.length}]</span>
         <span>&mdash;</span>
-        <span>2024 &ndash; 2026</span>
+        <span>{yearRange}</span>
       </div>
     </section>
 
@@ -31,6 +44,9 @@ const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
       <h2 id="grid-heading" class="sr-only" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
         Lista de canciones y producciones
       </h2>
+
+      <ProjectFilter />
+
       <div class={styles.projectsStack}>
         {sortedProjects.map((proyecto) => (
           <ProjectCard
@@ -49,3 +65,4 @@ const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
     </section>
   </div>
 </Layout>
+

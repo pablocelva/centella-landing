@@ -36,7 +36,7 @@ const {
 } = Astro.props;
 ---
 
-<article class={styles.card}>
+<article class={styles.card} data-project-card data-category={category.toLowerCase()}>
   <!-- Left Column: Album Cover Artwork Image -->
   <div class={styles.imageWrapper}>
     <a

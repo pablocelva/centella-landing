@@ -1,16 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import ProjectFilter from '../components/ProjectFilter.astro';
 import { getCollection } from 'astro:content';
 import styles from './index.module.css';
 
 const allProjects = await getCollection('proyectos');
-const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
+const sortedProjects = allProjects.sort((a, b) => {
+  const yearA = parseInt(a.data.year, 10) || 0;
+  const yearB = parseInt(b.data.year, 10) || 0;
+  if (yearB !== yearA) {
+    return yearB - yearA; // Most recent year first
+  }
+  return a.data.order - b.data.order;
+});
 ---
 
 <Layout
   title="Estudio Centella — Producción Musical & Mezcla en Chile"
-  description="Estudio de producción musical, mezcla, masterización estéreo/stem y edición de audio en Santiago, Chile."
+  description="Estudio de producción musical, mezcla y edición de audio en Santiago, Chile."
 >
   <div class={styles.container}>
     <!-- Bloque 1 (Wireframe Home.png): Banner Superior Ancho Completo -->
@@ -36,11 +44,14 @@ const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
       <span class={styles.introMeta}>PRODUCCIONES RECIENTES [{sortedProjects.length}]</span>
     </section>
 
-    <!-- Bloque 3 (Wireframe Home.png): Lista de Proyectos Musicales -->
+    <!-- Bloque 3 (Wireframe Home.png): Barra de Filtros & Lista de Proyectos -->
     <section aria-labelledby="projects-heading">
       <h2 id="projects-heading" class="sr-only" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
         Producciones Musicales Destacadas
       </h2>
+
+      <ProjectFilter />
+
       <div class={styles.projectsStack}>
         {sortedProjects.map((proyecto) => (
           <ProjectCard
