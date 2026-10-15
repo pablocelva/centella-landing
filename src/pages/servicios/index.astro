@@ -35,39 +35,41 @@ for (let i = 0; i < activeServices.length; i += 2) {
           {pair.map(servicio => (
             <ServiceCard
               id={servicio.id}
+              slug={servicio.id}
               number={servicio.data.number}
               title={servicio.data.title}
               summary={servicio.data.summary}
               tagline={servicio.data.tagline}
               details={servicio.data.details}
+              hasPlans={Boolean(servicio.data.plans && servicio.data.plans.length > 0)}
             />
           ))}
         </section>
 
-        {index === 0 && (
+        {/* {index === 0 && (
           <div class={styles.fullBanner}>
             <span class={styles.fullBannerText}>
               FLUJO DE TRABAJO EN ESTUDIO &mdash; Pre-producción técnica, sesiones de captura, balance de mezcla y entrega de archivos finales para plataformas digitales.
             </span>
             <span class={styles.fullBannerMeta}>[01] TRABAJO PROFESIONAL</span>
           </div>
-        )}
+        )} */}
 
-        {index === 1 && (
+        {/* {index === 1 && (
           <div class={styles.fullBanner}>
             <span class={styles.fullBannerText}>
               CALIDAD DE AUDIO &mdash; Archivos de alta resolución en 24-bit/96kHz con balance dinámico y claridad acústica.
             </span>
             <span class={styles.fullBannerMeta}>[02] CERO DISTORSIÓN</span>
           </div>
-        )}
+        )} */}
       </>
     ))}
 
     <!-- Banner Ancho Completo CTA -->
     <div class={styles.fullBanner}>
       <span class={styles.fullBannerText}>
-        ¿TIENES UN PROYECTO O ÁLBUM EN PUERTA? Agenda una sesión de evaluación de tu material con nuestro equipo.
+        ¿TIENES UN PROYECTO O ÁLBUM EN PUERTA? Escríbeme para agendar una sesión de evaluación de tu material.
       </span>
       <a href="/contacto" class={styles.ctaLink}>
         AGENDAR SESIÓN &rarr;

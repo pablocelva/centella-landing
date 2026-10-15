@@ -3,14 +3,17 @@ import styles from './ServiceCard.module.css';
 
 interface Props {
   id?: string;
+  slug?: string;
   number: string;
   title: string;
   summary: string;
   tagline: string;
   details: string[];
+  hasPlans?: boolean;
 }
 
-const { id, number, title, summary, tagline, details } = Astro.props;
+const { id, slug, number, title, summary, tagline, details, hasPlans = false } = Astro.props;
+const targetSlug = slug || id;
 ---
 
 <article class={styles.card} id={id}>
@@ -18,14 +21,38 @@ const { id, number, title, summary, tagline, details } = Astro.props;
     <span class={styles.number}>[{number}]</span>
     <span class={styles.tagline}>{tagline}</span>
   </div>
-  <h3 class={styles.title}>{title}</h3>
+
+  <h3 class={styles.title}>
+    {targetSlug ? (
+      <a href={`/servicios/${targetSlug}`} class={styles.titleLink}>
+        {title}
+      </a>
+    ) : (
+      title
+    )}
+  </h3>
+
   <p class={styles.summary}>{summary}</p>
+
   <ul class={styles.detailsList}>
-    {details.map(item => (
-      <li class={styles.detailItem}>
-        <span class={styles.bullet}></span>
-        <span>{item}</span>
-      </li>
-    ))}
+    {details.map(item => {
+      const colonIndex = item.indexOf(':');
+      const concept = colonIndex !== -1 ? item.slice(0, colonIndex).trim() : item;
+
+      return (
+        <li class={styles.detailItem}>
+          <span class={styles.bullet}></span>
+          <span class={styles.detailText}>{concept}</span>
+        </li>
+      );
+    })}
   </ul>
+
+  {targetSlug && (
+    <div class={styles.footer}>
+      <a href={`/servicios/${targetSlug}`} class={styles.detailLink}>
+        {hasPlans ? '[VER DETALLES Y PLANES →]' : '[VER INFORMACIÓN DETALLADA →]'}
+      </a>
+    </div>
+  )}
 </article>

@@ -1,0 +1,265 @@
+---
+import { getCollection } from 'astro:content';
+import styles from './ProjectsCarousel.module.css';
+
+interface Props {
+  serviceSlug?: string;
+  serviceTitle?: string;
+  sectionNumber?: string;
+  title?: string;
+  tag?: string;
+}
+
+const {
+  serviceSlug = '',
+  serviceTitle = '',
+  sectionNumber = '03',
+  title: customTitle,
+  tag: customTag
+} = Astro.props;
+
+// Fetch all active/featured projects
+const allProjects = await getCollection('proyectos');
+const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
+
+// Filtering rules:
+// 1. For consultoria or unspecified: show ALL projects without distinguishing tags.
+// 2. For produccion or mezcla: match against serviceBadges slugs (shared tags are preserved).
+const isConsultoria = serviceSlug.includes('consultoria') || serviceSlug === '';
+
+const filteredProjects = isConsultoria
+  ? sortedProjects
+  : sortedProjects.filter(project => {
+      const badges = project.data.serviceBadges || [];
+      return badges.some(b => {
+        if (serviceSlug === 'produccion-musical') {
+          return b.slug === 'produccion-musical' || b.slug.includes('produccion');
+        }
+        if (serviceSlug === 'mezcla') {
+          return b.slug === 'mezcla';
+        }
+        return b.slug === serviceSlug || b.slug.includes(serviceSlug);
+      });
+    });
+
+// Determine dynamic heading tags & titles
+let displayTag = customTag;
+let displayTitle = customTitle;
+
+if (!displayTag) {
+  if (serviceSlug === 'produccion-musical') {
+    displayTag = `[${sectionNumber}] TRABAJOS DE PRODUCCIÓN MUSICAL // ${filteredProjects.length} PROYECTOS`;
+  } else if (serviceSlug === 'mezcla') {
+    displayTag = `[${sectionNumber}] TRABAJOS DE MEZCLA DE AUDIO // ${filteredProjects.length} PROYECTOS`;
+  } else if (isConsultoria) {
+    displayTag = `[${sectionNumber}] CATÁLOGO COMPLETO DE PROYECTOS // ${filteredProjects.length} PRODUCCIONES`;
+  } else {
+    displayTag = `[${sectionNumber}] PROYECTOS DESTACADOS // ${filteredProjects.length} TRABAJOS`;
+  }
+}
+
+if (!displayTitle) {
+  if (serviceSlug === 'produccion-musical') {
+    displayTitle = 'Obras Producidas en Estudio Centella';
+  } else if (serviceSlug === 'mezcla') {
+    displayTitle = 'Mezclas Realizadas en Estudio Centella';
+  } else if (isConsultoria) {
+    displayTitle = 'Discografía y Proyectos Desarrollados en el Estudio';
+  } else {
+    displayTitle = `Proyectos de ${serviceTitle || 'Estudio Centella'}`;
+  }
+}
+
+// Enable animated continuous scroll when project count allows (>= 3 projects)
+const shouldAnimate = filteredProjects.length >= 3;
+const marqueeDuration = Math.max(25, filteredProjects.length * 4.8);
+---
+
+{filteredProjects.length > 0 && (
+  <section class={styles.carouselSection} aria-labelledby="carousel-title" data-projects-carousel>
+    <div class={styles.headerRow}>
+      <div class={styles.titleGroup}>
+        <span class={styles.sectionTag}>{displayTag}</span>
+        <h2 id="carousel-title" class={styles.sectionTitle}>{displayTitle}</h2>
+      </div>
+
+      <div class={styles.controlsRow}>
+        {shouldAnimate && (
+          <>
+            <button
+              type="button"
+              class={styles.controlBtn}
+              data-carousel-toggle
+              title="Pausar o reanudar movimiento continuo"
+            >
+              [PAUSA]
+            </button>
+            <button
+              type="button"
+              class={styles.controlBtn}
+              data-carousel-reverse
+              title="Invertir dirección del carrusel"
+            >
+              [INVERTIR ⇄]
+            </button>
+          </>
+        )}
+        <a href="/proyectos" class={styles.allProjectsLink}>
+          VER CATÁLOGO &rarr;
+        </a>
+      </div>
+    </div>
+
+    {shouldAnimate ? (
+      <div class={styles.trackWrapper}>
+        <div
+          class:list={[styles.track, styles.trackAnimated]}
+          data-carousel-track
+          style={`--marquee-duration: ${marqueeDuration}s;`}
+        >
+          {/* Primary Set */}
+          <div class={styles.itemGroup}>
+            {filteredProjects.map(project => (
+              <a
+                href={`/proyectos/${project.id}`}
+                class={styles.card}
+                title={`${project.data.title} — ${project.data.artist}`}
+              >
+                <div class={styles.imageWrapper}>
+                  <img
+                    src={project.data.coverImage}
+                    alt={`Portada de ${project.data.title} por ${project.data.artist}`}
+                    class={styles.coverImg}
+                    loading="lazy"
+                  />
+                  <div class={styles.hoverOverlay}>
+                    <span class={styles.overlayMeta}>
+                      {project.data.category} &bull; {project.data.year}
+                    </span>
+                    <span class={styles.overlayAction}>VER PROYECTO &rarr;</span>
+                  </div>
+                </div>
+                <div class={styles.cardInfo}>
+                  <h3 class={styles.artist}>{project.data.artist}</h3>
+                  <span class={styles.title}>{project.data.title}</span>
+                  <div class={styles.badgeRow}>
+                    {project.data.serviceBadges.slice(0, 2).map((badge: { slug: string; label: string }) => (
+                      <span class={styles.miniBadge}>[{badge.label}]</span>
+                    ))}
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {/* Duplicate Set for Seamless Continuous Infinite Marquee */}
+          <div class={styles.itemGroup} aria-hidden="true">
+            {filteredProjects.map(project => (
+              <a
+                href={`/proyectos/${project.id}`}
+                class={styles.card}
+                tabindex="-1"
+                title={`${project.data.title} — ${project.data.artist}`}
+              >
+                <div class={styles.imageWrapper}>
+                  <img
+                    src={project.data.coverImage}
+                    alt=""
+                    class={styles.coverImg}
+                    loading="lazy"
+                  />
+                  <div class={styles.hoverOverlay}>
+                    <span class={styles.overlayMeta}>
+                      {project.data.category} &bull; {project.data.year}
+                    </span>
+                    <span class={styles.overlayAction}>VER PROYECTO &rarr;</span>
+                  </div>
+                </div>
+                <div class={styles.cardInfo}>
+                  <h3 class={styles.artist}>{project.data.artist}</h3>
+                  <span class={styles.title}>{project.data.title}</span>
+                  <div class={styles.badgeRow}>
+                    {project.data.serviceBadges.slice(0, 2).map((badge: { slug: string; label: string }) => (
+                      <span class={styles.miniBadge}>[{badge.label}]</span>
+                    ))}
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div class={styles.staticGrid}>
+        {filteredProjects.map(project => (
+          <a
+            href={`/proyectos/${project.id}`}
+            class={styles.card}
+            title={`${project.data.title} — ${project.data.artist}`}
+          >
+            <div class={styles.imageWrapper}>
+              <img
+                src={project.data.coverImage}
+                alt={`Portada de ${project.data.title} por ${project.data.artist}`}
+                class={styles.coverImg}
+                loading="lazy"
+              />
+              <div class={styles.hoverOverlay}>
+                <span class={styles.overlayMeta}>
+                  {project.data.category} &bull; {project.data.year}
+                </span>
+                <span class={styles.overlayAction}>VER PROYECTO &rarr;</span>
+              </div>
+            </div>
+            <div class={styles.cardInfo}>
+              <h3 class={styles.artist}>{project.data.artist}</h3>
+              <span class={styles.title}>{project.data.title}</span>
+              <div class={styles.badgeRow}>
+                {project.data.serviceBadges.slice(0, 2).map((badge: { slug: string; label: string }) => (
+                  <span class={styles.miniBadge}>[{badge.label}]</span>
+                ))}
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+)}
+
+<script>
+  function setupCarousels() {
+    const containers = document.querySelectorAll('[data-projects-carousel]');
+    containers.forEach(container => {
+      const track = container.querySelector('[data-carousel-track]') as HTMLElement | null;
+      const toggleBtn = container.querySelector('[data-carousel-toggle]');
+      const reverseBtn = container.querySelector('[data-carousel-reverse]');
+      if (!track || !toggleBtn) return;
+
+      let isPaused = false;
+      let isReversed = false;
+
+      toggleBtn.addEventListener('click', () => {
+        isPaused = !isPaused;
+        track.style.animationPlayState = isPaused ? 'paused' : 'running';
+        toggleBtn.textContent = isPaused ? '[REANUDAR]' : '[PAUSA]';
+      });
+
+      if (reverseBtn) {
+        reverseBtn.addEventListener('click', () => {
+          isReversed = !isReversed;
+          track.style.animationDirection = isReversed ? 'reverse' : 'normal';
+          reverseBtn.textContent = isReversed ? '[NORMAL ⇄]' : '[INVERTIR ⇄]';
+        });
+      }
+    });
+  }
+
+  document.addEventListener('astro:page-load', setupCarousels);
+  if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    setupCarousels();
+  } else {
+    document.addEventListener('DOMContentLoaded', setupCarousels);
+  }
+</script>
+

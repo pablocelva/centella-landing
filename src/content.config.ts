@@ -27,6 +27,21 @@ const proyectos = defineCollection({
   })
 });
 
+const planSchema = z.object({
+  name: z.string(),
+  sessions: z.string().optional(),
+  subtitle: z.string().optional(),
+  description: z.string(),
+  requirements: z.array(z.string()).optional(),
+  basePrice: z.string(),
+  basePriceLabel: z.string().optional(),
+  promoMixPrice: z.string().optional(),
+  totalPromoPrice: z.string().optional(),
+  bulkPrice: z.string().optional(),
+  bulkLabel: z.string().optional(),
+  highlight: z.boolean().default(false)
+});
+
 const servicios = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/servicios' }),
   schema: z.object({
@@ -36,7 +51,10 @@ const servicios = defineCollection({
     details: z.array(z.string()),
     tagline: z.string(),
     active: z.boolean().default(true),
-    order: z.number().default(1)
+    order: z.number().default(1),
+    image: z.string().optional(),
+    note: z.string().optional(),
+    plans: z.array(planSchema).optional()
   })
 });
 

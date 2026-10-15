@@ -1,0 +1,245 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProjectsCarousel from '../../components/ProjectsCarousel.astro';
+import { getCollection, render } from 'astro:content';
+import styles from './servicio.module.css';
+
+export async function getStaticPaths() {
+  const servicios = await getCollection('servicios');
+  return servicios
+    .filter(servicio => servicio.data.active !== false)
+    .map(servicio => ({
+      params: { slug: servicio.id },
+      props: { servicio }
+    }));
+}
+
+const { servicio } = Astro.props;
+const { data } = servicio;
+const { Content } = await render(servicio);
+
+const plans = data.plans || [];
+const hasPlans = plans.length > 0;
+const hasMarkdownContent = Boolean(servicio.body && servicio.body.trim().length > 0);
+const serviceImage = data.image || '/covers/nostalgia-centella.jpg';
+---
+
+<Layout
+  title={`${data.title} — Servicios Estudio Centella`}
+  description={data.summary}
+>
+  <div class={styles.container}>
+    <div>
+      <a href="/servicios" class={styles.backLink}>
+        &larr; VOLVER AL LISTADO DE SERVICIOS
+      </a>
+    </div>
+
+    <!-- Hero Header Banner -->
+    <section class={styles.heroBanner} aria-labelledby="service-title">
+      <div class={styles.tagRow}>
+        <span class={styles.tag}>[03] SERVICIOS &bull; {data.tagline}</span>
+        <span class={styles.numberBadge}>[{data.number}]</span>
+      </div>
+      <h1 id="service-title" class={styles.title}>{data.title}</h1>
+      <p class={styles.summary}>{data.summary}</p>
+    </section>
+
+    <!-- Top Split Row: Scope & Process (Left) + Image (Right) -->
+    <div class={styles.mainSplit}>
+      <!-- Left Column: Scope & Process -->
+      <section class={styles.scopeCard} aria-labelledby="scope-heading">
+        <h2 id="scope-heading" class={styles.sectionHeader}>
+          [01] EL PROCESO CONTEMPLA
+        </h2>
+
+        <ul class={styles.processList}>
+          {data.details.map((item: string) => {
+            const colonIndex = item.indexOf(':');
+            const hasColon = colonIndex !== -1;
+            const concept = hasColon ? item.slice(0, colonIndex).trim() : '';
+            const description = hasColon ? item.slice(colonIndex + 1).trim() : item;
+
+            return (
+              <li class={styles.processItem}>
+                <span class={styles.bullet}></span>
+                <span class={styles.itemText}>
+                  {hasColon ? (
+                    <>
+                      <strong class={styles.concept}>{concept}:</strong> {description}
+                    </>
+                  ) : (
+                    item
+                  )}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+
+        {data.note && (
+          <div class={styles.noteBox}>
+            {data.note}
+          </div>
+        )}
+
+        {hasMarkdownContent && (
+          <div class={styles.markdownBody}>
+            <Content />
+          </div>
+        )}
+      </section>
+
+      <!-- Right Column: Studio / Production Image -->
+      <div class={styles.imageCard}>
+        <img
+          src={serviceImage}
+          alt={`Entorno de producción para ${data.title}`}
+          class={styles.serviceImage}
+          loading="lazy"
+        />
+      </div>
+    </div>
+
+    <!-- Bottom Section: Modalidades y Tarifas -->
+    <section class={styles.plansSection} aria-labelledby="plans-heading">
+      <h2 id="plans-heading" class={styles.sectionHeader}>
+        {hasPlans ? '[02] MODALIDADES Y TARIFAS DISPONIBLES' : '[02] EVALUACIÓN Y PROPUESTA DE TRABAJO'}
+      </h2>
+
+      {hasPlans ? (
+        <div class={styles.plansGrid}>
+          {plans.map((plan: any) => (
+            <article class:list={[styles.planCard, { [styles.highlight]: plan.highlight }]}>
+              {plan.highlight && (
+                <span class={styles.planHighlightTag}>RECOMENDADO</span>
+              )}
+              <div class={styles.planTop}>
+                <div>
+                  <h3 class={styles.planName}>{plan.name}</h3>
+                  {(plan.subtitle || plan.sessions) && (
+                    <span class={styles.planSessions}>{plan.subtitle || plan.sessions}</span>
+                  )}
+                </div>
+              </div>
+
+              <p class={styles.planDesc}>{plan.description}</p>
+
+              {plan.requirements && plan.requirements.length > 0 && (
+                <div class={styles.requirementsArea}>
+                  <span class={styles.requirementsLabel}>REQUERIMIENTOS TÉCNICOS:</span>
+                  <ul class={styles.requirementsList}>
+                    {plan.requirements.map((req: string) => {
+                      const isImportant = req.startsWith('Importante:');
+                      return (
+                        <li class:list={[styles.requirementItem, { [styles.reqImportant]: isImportant }]}>
+                          <span class={styles.bulletMini}></span>
+                          <span>
+                            {isImportant ? (
+                              <>
+                                <strong class={styles.importantTag}>Importante:</strong>
+                                {req.slice('Importante:'.length)}
+                              </>
+                            ) : (
+                              req
+                            )}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+
+              <div class={styles.pricingTable}>
+                <div class={styles.priceRow}>
+                  <span>{plan.basePriceLabel || (plan.bulkPrice ? '1 O 2 CANCIONES:' : 'VALOR BASE:')}</span>
+                  <span class={styles.priceRowValue}>{plan.basePrice}</span>
+                </div>
+
+                {plan.promoMixPrice && (
+                  <div class={styles.priceRow}>
+                    <span>PROMO + MEZCLA:</span>
+                    <span class={styles.priceRowValue}>+ {plan.promoMixPrice}</span>
+                  </div>
+                )}
+
+                {plan.bulkPrice && (
+                  <div class={styles.priceRow}>
+                    <span>{plan.bulkLabel || 'DE 3 EN ADELANTE:'}</span>
+                    <span class={styles.priceRowValue}>{plan.bulkPrice}</span>
+                  </div>
+                )}
+
+                {plan.totalPromoPrice && (
+                  <div class={styles.priceTotalRow}>
+                    <span class={styles.priceTotalLabel}>TOTAL PROMO SINGLE:</span>
+                    <span class={styles.priceTotalValue}>{plan.totalPromoPrice}</span>
+                  </div>
+                )}
+              </div>
+
+              <a
+                href={`/contacto?service=${servicio.id}&plan=${encodeURIComponent(plan.name)}`}
+                class:list={[styles.planBtn, { [styles.planBtnPrimary]: plan.highlight }]}
+              >
+                AGENDAR / COTIZAR {plan.name.toUpperCase()} &rarr;
+              </a>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <article class={styles.customQuoteBox}>
+          <div class={styles.customQuoteLeft}>
+            <div class={styles.customQuoteHeader}>
+              <span class={styles.customQuoteTag}>[MODALIDAD] SESIÓN DE EVALUACIÓN</span>
+              <h3 class={styles.customQuoteTitle}>PROPUESTA Y PLAN DE TRABAJO A MEDIDA</h3>
+            </div>
+            <p class={styles.customQuoteText}>
+              Durante la sesión revisamos el estado actual del proyecto, identificamos sus necesidades y definimos los próximos pasos para avanzar. A partir de esta evaluación, elaboramos una propuesta de trabajo acorde a tus objetivos.
+            </p>
+            <div class={styles.customQuoteNote}>
+              <span class={styles.bulletMini}></span>
+              <span>Cada servicio derivado se cotiza por separado, según los requerimientos específicos de tu proyecto.</span>
+            </div>
+          </div>
+
+          <div class={styles.customQuoteRight}>
+            <div class={styles.customQuoteAreas}>
+              <span class={styles.customQuoteAreasLabel}>SERVICIOS MODULARES A CONSIDERAR:</span>
+              <div class={styles.customQuoteTagsGrid}>
+                <span class={styles.serviceChip}>PRODUCCIÓN MUSICAL</span>
+                <span class={styles.serviceChip}>ARREGLOS Y COMPOSICIÓN</span>
+                <span class={styles.serviceChip}>SESIONES DE GRABACIÓN</span>
+                <span class={styles.serviceChip}>EDICIÓN DE AUDIO</span>
+                <span class={styles.serviceChip}>PRODUCCIÓN EJECUTIVA</span>
+                <span class={styles.serviceChip}>COORDINACIÓN EXTERNA</span>
+              </div>
+            </div>
+
+            <a href={`/contacto?service=${servicio.id}`} class={styles.customQuoteBtn}>
+              AGENDAR SESIÓN DE CONSULTORÍA &rarr;
+            </a>
+          </div>
+        </article>
+      )}
+    </section>
+
+    <!-- Carousel de Portadas de Trabajos del Servicio -->
+    <ProjectsCarousel
+      serviceSlug={servicio.id}
+      serviceTitle={data.title}
+      sectionNumber="03"
+    />
+
+    <!-- Bottom Banner CTA -->
+    <div class={styles.fullBanner}>
+      <span class={styles.fullBannerText}>
+        ¿TIENES CONSULTAS ESPECÍFICAS SOBRE ESTE SERVICIO? Escríbeme para conversar sobre tu música.
+      </span>
+      <a href={`/contacto?service=${servicio.id}`} class={styles.ctaLink}>
+        CONTACTAR AL ESTUDIO &rarr;
+      </a>
+    </div>
+  </div>
+</Layout>

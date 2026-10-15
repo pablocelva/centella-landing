@@ -14,7 +14,7 @@ const contactEmail = "acaballerogonz@gmail.com";
     <section class={styles.heroBanner} aria-labelledby="contact-heading">
       <span class={styles.tag}>[05] CONTACTO &amp; RESERVA DE SESIONES</span>
       <h1 id="contact-heading" class={styles.title}>
-        Platiquemos sobre tu próximo proyecto discográfico o sesión de estudio.
+        Escríbeme para conversar sobre tu próximo proyecto discográfico o sesión de estudio.
       </h1>
     </section>
 
@@ -28,7 +28,7 @@ const contactEmail = "acaballerogonz@gmail.com";
           <div style="display: flex; flex-direction: column; gap: 20px;">
             <div class={styles.formGroup}>
               <label for="name" class={styles.label}>Nombre o Nombre de Banda / Artista *</label>
-              <input type="text" id="name" name="name" required class={styles.input} placeholder="ej. Camila Vega / Dúo Ámbar" />
+              <input type="text" id="name" name="name" required class={styles.input} placeholder="Tu nombre o el de tu proyecto" />
             </div>
 
             <div class={styles.formGroup}>
@@ -40,21 +40,19 @@ const contactEmail = "acaballerogonz@gmail.com";
               <label for="service" class={styles.label}>Servicio Requerido *</label>
               <select id="service" name="service" required class={styles.select}>
                 <option value="" disabled selected>Selecciona un servicio...</option>
-                <option value="produccion">Producción Musical Integral</option>
-                <option value="mezcla">Mezcla de Audio</option>
-                <option value="edicion">Edición &amp; Limpieza Vocal</option>
-                <option value="consultoria">Consultoría de Sonido</option>
-                <option value="grabacion">Grabación en Estudio (Santiago)</option>
+                <option value="produccion">Producción Musical</option>
+                <option value="mezcla">Mezcla</option>
+                <option value="consultoria">Consultoría</option>
               </select>
             </div>
 
             <div class={styles.formGroup}>
               <label for="message" class={styles.label}>Detalles del Proyecto / Formato de Grabación *</label>
-              <textarea id="message" name="message" required class={styles.textarea} placeholder="Cuéntanos sobre tu música, número de canciones, instrumentos y fecha estimada de entrega..."></textarea>
+              <textarea id="message" name="message" required class={styles.textarea} placeholder="Cuéntame sobre tu música, tu proyecto, número de canciones, instrumentos y fecha estimada de entrega..."></textarea>
             </div>
 
             <button type="submit" class={styles.submitBtn}>
-              ENVIAR MENSAJE DE CONSULTA &rarr;
+              ENVIAR MENSAJE &rarr;
             </button>
           </div>
         </form>
@@ -137,6 +135,24 @@ const contactEmail = "acaballerogonz@gmail.com";
     const btn = document.getElementById('copyEmailBtn');
     const toast = document.getElementById('copyToast');
     const form = document.getElementById('contactForm');
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const serviceParam = urlParams.get('service');
+    const planParam = urlParams.get('plan');
+    const select = document.getElementById('service');
+    const textarea = document.getElementById('message');
+
+    if (select && serviceParam) {
+      if (serviceParam.includes('produccion')) select.value = 'produccion';
+      else if (serviceParam.includes('mezcla')) select.value = 'mezcla';
+      else if (serviceParam.includes('edicion')) select.value = 'edicion';
+      else if (serviceParam.includes('consultoria')) select.value = 'consultoria';
+      else if (serviceParam.includes('grabacion')) select.value = 'grabacion';
+    }
+
+    if (textarea && planParam && !textarea.value) {
+      textarea.value = `Hola, me interesa cotizar la modalidad: ${planParam}.\n`;
+    }
 
     if (form) {
       form.addEventListener('submit', (evt) => {
