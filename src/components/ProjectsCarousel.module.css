@@ -84,49 +84,42 @@
   color: var(--bg-canvas);
 }
 
-/* Track and Marquee Animation */
+/* Track and Interactive Draggable Scroll */
 .trackWrapper {
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   width: 100%;
   position: relative;
   padding: 10px 0;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+  scroll-behavior: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   /* Smooth edge fade out */
   mask-image: linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
   -webkit-mask-image: linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
 }
 
+.trackWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.trackWrapper[data-dragging="true"] {
+  cursor: grabbing;
+}
+
 .track {
   display: flex;
   width: max-content;
-  will-change: transform;
-}
-
-.trackAnimated {
-  animation: marqueeScroll var(--marquee-duration, 35s) linear infinite;
-}
-
-/* Pause marquee when hovering anywhere in track */
-.trackWrapper:hover .trackAnimated {
-  animation-play-state: paused;
-}
-
-.trackWrapper:focus-within .trackAnimated {
-  animation-play-state: paused;
 }
 
 .itemGroup {
   display: flex;
   gap: 20px;
   padding-right: 20px;
-}
-
-@keyframes marqueeScroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
 }
 
 /* Individual Project Card */
@@ -165,6 +158,9 @@
   object-fit: cover;
   display: block;
   transition: transform 0.4s ease, filter var(--transition-fast);
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
 }
 
 .card:hover .coverImg {
@@ -278,12 +274,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .trackAnimated {
-    animation: none;
-  }
   .trackWrapper {
     overflow-x: auto;
-    scrollbar-width: thin;
   }
 }
 

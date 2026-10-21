@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import ProjectsCarousel from '../../components/ProjectsCarousel.astro';
 import { getCollection, render } from 'astro:content';
 import styles from './proyecto.module.css';
 
@@ -111,5 +112,14 @@ const { Content } = await render(proyecto);
         </article>
       ))}
     </section>
+
+    <!-- Carrusel de Obras Relacionadas del Estudio -->
+    <ProjectsCarousel
+      currentProjectId={proyecto.id}
+      relatedServiceSlugs={data.serviceBadges.map((b: { slug: string }) => b.slug)}
+      sectionNumber="04"
+      tag="[04] PRODUCCIONES RELACIONADAS // ESTUDIO CENTELLA"
+      title="Otras Obras y Trabajos Realizados en el Estudio"
+    />
   </div>
 </Layout>
