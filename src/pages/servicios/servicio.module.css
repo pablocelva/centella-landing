@@ -1,10 +1,12 @@
 .container {
   max-width: var(--max-width);
+  width: 100%;
   margin: 0 auto;
   padding: 40px 24px 80px;
   display: flex;
   flex-direction: column;
   gap: 32px;
+  box-sizing: border-box;
 }
 
 .backLink {
@@ -184,12 +186,16 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .plansGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: 24px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .planCard {
@@ -201,6 +207,8 @@
   gap: 16px;
   position: relative;
   transition: border-color var(--transition-fast);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .planCard.highlight {
@@ -315,6 +323,9 @@
 .priceRow {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
   font-family: var(--font-mono);
   font-size: 12px;
   color: var(--text-muted);
@@ -329,6 +340,8 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
   padding-top: 10px;
   border-top: 1px solid var(--border-subtle);
 }
@@ -359,6 +372,11 @@
   background-color: var(--bg-card);
   transition: background-color var(--transition-fast), color var(--transition-fast);
   margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 .planBtn:hover {
@@ -555,5 +573,105 @@
   .fullBanner {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 28px 18px 60px;
+    gap: 24px;
+  }
+
+  .heroBanner {
+    padding: 28px 20px;
+  }
+
+  .scopeCard {
+    padding: 24px 20px;
+  }
+
+  .plansSection {
+    padding: 24px 18px;
+    gap: 20px;
+  }
+
+  .plansGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .planCard {
+    padding: 22px 18px;
+    width: 100%;
+  }
+
+  .customQuoteBox {
+    padding: 20px 16px;
+    gap: 20px;
+  }
+
+  .customQuoteRight {
+    padding: 20px 16px;
+  }
+
+  .fullBanner {
+    padding: 24px 20px;
+  }
+
+  .ctaLink {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 20px 14px 48px;
+    gap: 20px;
+  }
+
+  .heroBanner {
+    padding: 24px 16px;
+  }
+
+  .tag {
+    flex: 1 1 100%;
+  }
+
+  .scopeCard {
+    padding: 20px 14px;
+  }
+
+  .plansSection {
+    padding: 20px 14px;
+    gap: 16px;
+  }
+
+  .planCard {
+    padding: 18px 14px;
+  }
+
+  .planHighlightTag {
+    right: 14px;
+  }
+
+  .planBtn {
+    padding: 12px 10px;
+    font-size: 10.5px;
+  }
+
+  .customQuoteBox {
+    padding: 18px 14px;
+    gap: 16px;
+  }
+
+  .customQuoteRight {
+    padding: 16px 12px;
+  }
+
+  .customQuoteBtn {
+    padding: 14px 16px;
+    font-size: 11px;
   }
 }

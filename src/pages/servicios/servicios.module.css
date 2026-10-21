@@ -90,3 +90,18 @@
   }
 }
 
+@media (max-width: 600px) {
+  .container {
+    padding: 24px 16px 48px;
+    gap: 24px;
+  }
+  .heroBanner {
+    padding: 32px 20px;
+  }
+  .ctaLink {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+}
+

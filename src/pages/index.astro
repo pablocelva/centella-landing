@@ -1,19 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import ProjectFilter from '../components/ProjectFilter.astro';
+import ProjectsCarousel from '../components/ProjectsCarousel.astro';
 import { getCollection } from 'astro:content';
 import styles from './index.module.css';
 
 const allProjects = await getCollection('proyectos');
-const sortedProjects = allProjects.sort((a, b) => {
-  const yearA = parseInt(a.data.year, 10) || 0;
-  const yearB = parseInt(b.data.year, 10) || 0;
-  if (yearB !== yearA) {
-    return yearB - yearA; // Most recent year first
-  }
-  return a.data.order - b.data.order;
-});
+const sortedProjects = allProjects.sort((a, b) => a.data.order - b.data.order);
+
+const allServices = await getCollection('servicios');
+const activeServices = allServices
+  .filter(s => s.data.active !== false)
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout
@@ -21,7 +18,7 @@ const sortedProjects = allProjects.sort((a, b) => {
   description="Estudio de producción musical, mezcla y edición de audio en Santiago, Chile."
 >
   <div class={styles.container}>
-    <!-- Bloque 1 (Wireframe Home.png): Banner Superior Ancho Completo -->
+    <!-- Bloque 1: Banner Superior Ancho Completo -->
     <section class={styles.heroBanner} aria-labelledby="hero-heading">
       <div>
         <span class={styles.heroTag}>[01] ESTUDIO DE PRODUCCIÓN MUSICAL &amp; MEZCLA</span>
@@ -36,37 +33,47 @@ const sortedProjects = allProjects.sort((a, b) => {
       </div>
     </section>
 
-    <!-- Bloque 2 (Wireframe Home.png): Barra Horizontal de Introducción -->
-    <section class={styles.introBar} aria-label="Manifiesto del Estudio">
-      <p class={styles.introText}>
-        Producciones con identidad sonora y alto impacto emotivo.
-      </p>
-      <span class={styles.introMeta}>PRODUCCIONES RECIENTES [{sortedProjects.length}]</span>
-    </section>
+    <!-- Bloque 2: Catálogo Discográfico & Carrusel Unificado -->
+    <ProjectsCarousel
+      sectionNumber="02"
+      tag={`[02] CATÁLOGO DISCOGRÁFICO // ${sortedProjects.length} PRODUCCIONES`}
+      title="Discografía y Trabajos Realizados en el Estudio"
+    />
 
-    <!-- Bloque 3 (Wireframe Home.png): Barra de Filtros & Lista de Proyectos -->
-    <section aria-labelledby="projects-heading">
-      <h2 id="projects-heading" class="sr-only" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
-        Producciones Musicales Destacadas
-      </h2>
+    <!-- Bloque 3: Servicios (Versión reducida como botones directos) -->
+    <section class={styles.servicesSection} aria-labelledby="services-heading">
+      <div class={styles.sectionHeaderBar}>
+        <span class={styles.sectionTag}>[03] SERVICIOS DE PRODUCCIÓN &amp; INGENIERÍA</span>
+        <a href="/servicios" class={styles.sectionLink}>
+          EXPLORAR DETALLES Y TARIFAS &rarr;
+        </a>
+      </div>
 
-      <ProjectFilter />
-
-      <div class={styles.projectsStack}>
-        {sortedProjects.map((proyecto) => (
-          <ProjectCard
-            id={proyecto.id}
-            title={proyecto.data.title}
-            artist={proyecto.data.artist}
-            year={proyecto.data.year}
-            category={proyecto.data.category}
-            coverImage={proyecto.data.coverImage}
-            description={proyecto.data.description}
-            serviceBadges={proyecto.data.serviceBadges}
-            streamingLinks={proyecto.data.streamingLinks}
-          />
+      <div class={styles.serviceButtonsGrid}>
+        {activeServices.map(servicio => (
+          <a
+            href={`/servicios/${servicio.id}`}
+            class={styles.serviceBtn}
+            title={`Ver información sobre ${servicio.data.title}`}
+          >
+            <div class={styles.serviceBtnLeft}>
+              <span class={styles.serviceBtnNumber}>[{servicio.data.number}]</span>
+              <span class={styles.serviceBtnTitle}>{servicio.data.title}</span>
+            </div>
+            <span class={styles.serviceBtnArrow}>&rarr;</span>
+          </a>
         ))}
       </div>
     </section>
+
+    <!-- Bloque 4: Banner CTA Final -->
+    <div class={styles.ctaBanner}>
+      <span class={styles.ctaBannerText}>
+        ¿TIENES UN PROYECTO O ÁLBUM EN PUERTA? Escríbeme para agendar una sesión de evaluación de tu material.
+      </span>
+      <a href="/contacto" class={styles.ctaBannerBtn}>
+        AGENDAR SESIÓN &rarr;
+      </a>
+    </div>
   </div>
 </Layout>
