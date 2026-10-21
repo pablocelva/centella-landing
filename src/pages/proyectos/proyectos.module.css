@@ -1,0 +1,97 @@
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Hero Banner */
+.heroBanner {
+  width: 100%;
+  min-height: 280px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroTag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--text-light);
+  text-transform: uppercase;
+}
+
+.heroTitle {
+  font-size: clamp(26px, 4.5vw, 42px);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-main);
+  max-width: 880px;
+  margin-top: 16px;
+}
+
+.heroMeta {
+  display: flex;
+  gap: 24px;
+  margin-top: 28px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Catalog Grid Section */
+.catalogSection {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.projectsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 32px 24px;
+}
+
+@media (max-width: 768px) {
+  .heroBanner {
+    padding: 32px 24px;
+    min-height: 220px;
+  }
+
+  .projectsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 24px 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 24px 16px 48px;
+    gap: 24px;
+  }
+
+  .heroBanner {
+    padding: 28px 20px;
+  }
+
+  .projectsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .projectsGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+

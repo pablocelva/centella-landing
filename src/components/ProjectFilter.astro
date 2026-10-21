@@ -43,7 +43,7 @@ import styles from './ProjectFilter.module.css';
           document.querySelectorAll('[data-project-card]').forEach(card => {
             const cardCat = (card.getAttribute('data-category') || '').toLowerCase();
             if (selectedCategory === 'all' || cardCat.includes(selectedCategory)) {
-              card.style.display = 'grid';
+              card.style.display = '';
             } else {
               card.style.display = 'none';
             }

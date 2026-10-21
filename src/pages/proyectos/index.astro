@@ -1,9 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import ProjectCard from '../../components/ProjectCard.astro';
+import ProjectGridCard from '../../components/ProjectGridCard.astro';
 import ProjectFilter from '../../components/ProjectFilter.astro';
 import { getCollection } from 'astro:content';
-import styles from '../index.module.css';
+import styles from './proyectos.module.css';
 
 const allProjects = await getCollection('proyectos');
 const sortedProjects = allProjects.sort((a, b) => {
@@ -40,25 +40,23 @@ const yearRange = minYear === maxYear ? `${minYear}` : `${minYear} \u2013 ${maxY
       </div>
     </section>
 
-    <section aria-labelledby="grid-heading">
+    <section aria-labelledby="grid-heading" class={styles.catalogSection}>
       <h2 id="grid-heading" class="sr-only" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
         Lista de canciones y producciones
       </h2>
 
       <ProjectFilter />
 
-      <div class={styles.projectsStack}>
+      <div class={styles.projectsGrid}>
         {sortedProjects.map((proyecto) => (
-          <ProjectCard
+          <ProjectGridCard
             id={proyecto.id}
             title={proyecto.data.title}
             artist={proyecto.data.artist}
             year={proyecto.data.year}
             category={proyecto.data.category}
             coverImage={proyecto.data.coverImage}
-            description={proyecto.data.description}
             serviceBadges={proyecto.data.serviceBadges}
-            streamingLinks={proyecto.data.streamingLinks}
           />
         ))}
       </div>
