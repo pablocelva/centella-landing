@@ -33,6 +33,8 @@ const planSchema = z.object({
   sessions: z.string().optional(),
   subtitle: z.string().optional(),
   description: z.string(),
+  details: z.array(z.string()).or(z.string().transform(val => [val])).optional(),
+  profile: z.array(z.string()).or(z.string().transform(val => [val])).optional(),
   requirements: z.array(z.string()).optional(),
   basePrice: z.string(),
   basePriceLabel: z.string().optional(),

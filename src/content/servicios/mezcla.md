@@ -1,21 +1,21 @@
 ---
 title: "Mezcla"
 number: "02"
-summary: "La mezcla es un proceso creativo que busca potenciar la identidad sonora de una canción, dando equilibrio, profundidad y carácter a sus elementos."
+summary: "Proceso creativo que busca potenciar la identidad sonora de una canción, dando equilibrio, profundidad y carácter a sus elementos."
 tagline: "Equilibrio, profundidad, espacialidad y carácter sonoro."
 image: "/covers/servicio.jpg"
 details:
   - "Reunión presencial: El trabajo comienza con una reunión presencial para conversar sobre los conceptos artísticos, las referencias y la dirección sonora del proyecto, buscando desarrollar una mezcla que refleje su intención e identidad."
   - "Balance y planos sonoros: Ecualización, balance dinámico y espacialidad para dar claridad, profundidad y pegada a cada elemento."
   - "Instancia de revisión: El servicio incluye una instancia de revisión y ajustes finales."
-  - "Masterización: La masterización se cotiza por separado de acuerdo con los requerimientos de cada proyecto."
+  - "Masterización: Se cotiza por separado según los requerimientos del proyecto. Gestiono el proceso junto a un equipo de ingenieros especializados, seleccionando al más adecuado para cada producción y acompañando el resultado mediante revisión y feedback."
 note: "*Nota: Se trabaja a partir del material grabado y editado entregado por el cliente. Cualquier edición adicional o modificación de arreglos se cotiza por separado."
 plans:
   - name: "Mezcla estándar"
     subtitle: "Hasta 40 pistas de audio"
     description: "Dirigida a canciones con múltiples capas instrumentales, voces, batería acústica y arreglos instrumentales detallados."
     requirements:
-      - "Hasta 40 pistas de audio."
+      # - "Hasta 40 pistas de audio."
       - "Pistas correctamente rotuladas y organizadas."
       - "Pistas editadas y listas para mezclar."
       - "Voces afinadas y compaginadas."
@@ -33,7 +33,7 @@ plans:
     subtitle: "Hasta 20 pistas de audio"
     description: "Dirigida a canciones con arreglos minimalistas, instrumentación acotada, voces y programaciones."
     requirements:
-      - "Hasta 20 pistas de audio."
+      # - "Hasta 20 pistas de audio."
       - "Pistas correctamente rotuladas y organizadas."
       - "Pistas editadas y listas para mezclar."
       - "Voces afinadas y compaginadas."

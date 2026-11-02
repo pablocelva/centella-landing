@@ -1,6 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import styles from './ProjectsCarousel.module.css';
+
+type Proyecto = CollectionEntry<'proyectos'>;
 
 interface Props {
   serviceSlug?: string;
@@ -32,7 +34,7 @@ const eligibleProjects = currentProjectId
   : sortedProjects;
 
 // Filtering rules:
-let filteredProjects = eligibleProjects;
+let filteredProjects: Proyecto[] = eligibleProjects;
 
 if (relatedServiceSlugs && relatedServiceSlugs.length > 0) {
   const matching = eligibleProjects.filter(project => {
@@ -91,7 +93,7 @@ if (!displayTitle) {
 }
 
 // Duplicate items in display set if count is small so group width W always exceeds viewport width
-let displayProjects = [...filteredProjects];
+let displayProjects: Proyecto[] = [...filteredProjects];
 while (displayProjects.length > 0 && displayProjects.length < 6) {
   displayProjects = [...displayProjects, ...filteredProjects];
 }
@@ -116,7 +118,7 @@ const shouldAnimate = filteredProjects.length >= 2;
               data-carousel-toggle
               title="Pausar o reanudar avance continuo"
             >
-              [PAUSA]
+              [⏹]
             </button>
             <button
               type="button"
@@ -139,7 +141,7 @@ const shouldAnimate = filteredProjects.length >= 2;
         <div class={styles.track} data-carousel-track>
           {/* Primary Set */}
           <div class={styles.itemGroup} data-carousel-group>
-            {displayProjects.map(project => (
+            {displayProjects.map((project: Proyecto) => (
               <a
                 href={`/proyectos/${project.id}`}
                 class={styles.card}
@@ -176,7 +178,7 @@ const shouldAnimate = filteredProjects.length >= 2;
 
           {/* Duplicate Set 1 (Center Working Set) */}
           <div class={styles.itemGroup} aria-hidden="true">
-            {displayProjects.map(project => (
+            {displayProjects.map((project: Proyecto) => (
               <a
                 href={`/proyectos/${project.id}`}
                 class={styles.card}
@@ -214,7 +216,7 @@ const shouldAnimate = filteredProjects.length >= 2;
 
           {/* Duplicate Set 2 */}
           <div class={styles.itemGroup} aria-hidden="true">
-            {displayProjects.map(project => (
+            {displayProjects.map((project: Proyecto) => (
               <a
                 href={`/proyectos/${project.id}`}
                 class={styles.card}
@@ -253,7 +255,7 @@ const shouldAnimate = filteredProjects.length >= 2;
       </div>
     ) : (
       <div class={styles.staticGrid}>
-        {filteredProjects.map(project => (
+        {filteredProjects.map((project: Proyecto) => (
           <a
             href={`/proyectos/${project.id}`}
             class={styles.card}

@@ -125,6 +125,58 @@ const serviceImage = data.image || '/covers/nostalgia-centella.jpg';
 
               <p class={styles.planDesc}>{plan.description}</p>
 
+              {plan.details && plan.details.length > 0 && (
+                <div class={styles.requirementsArea}>
+                  <span class={styles.requirementsLabel}>DISTRIBUCIÓN DE SESIONES:</span>
+                  <ul class={styles.requirementsList}>
+                    {plan.details.map((item: string) => {
+                      const isImportant = item.startsWith('Importante:');
+                      return (
+                        <li class:list={[styles.requirementItem, { [styles.reqImportant]: isImportant }]}>
+                          <span class={styles.bulletMini}></span>
+                          <span>
+                            {isImportant ? (
+                              <>
+                                <strong class={styles.importantTag}>Importante:</strong>
+                                {item.slice('Importante:'.length)}
+                              </>
+                            ) : (
+                              item
+                            )}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+
+              {plan.profile && plan.profile.length > 0 && (
+                <div class={styles.requirementsArea}>
+                  <span class={styles.requirementsLabel}>PERFIL DEL PROYECTO:</span>
+                  <ul class={styles.requirementsList}>
+                    {plan.profile.map((item: string) => {
+                      const isImportant = item.startsWith('Importante:');
+                      return (
+                        <li class:list={[styles.requirementItem, { [styles.reqImportant]: isImportant }]}>
+                          <span class={styles.bulletMini}></span>
+                          <span>
+                            {isImportant ? (
+                              <>
+                                <strong class={styles.importantTag}>Importante:</strong>
+                                {item.slice('Importante:'.length)}
+                              </>
+                            ) : (
+                              item
+                            )}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+
               {plan.requirements && plan.requirements.length > 0 && (
                 <div class={styles.requirementsArea}>
                   <span class={styles.requirementsLabel}>REQUERIMIENTOS TÉCNICOS:</span>
@@ -199,8 +251,8 @@ const serviceImage = data.image || '/covers/nostalgia-centella.jpg';
               Durante la sesión revisamos el estado actual del proyecto, identificamos sus necesidades y definimos los próximos pasos para avanzar. A partir de esta evaluación, elaboramos una propuesta de trabajo acorde a tus objetivos.
             </p>
             <div class={styles.customQuoteNote}>
-              <span class={styles.bulletMini}></span>
-              <span>Cada servicio derivado se cotiza por separado, según los requerimientos específicos de tu proyecto.</span>
+              {/* <span class={styles.bulletMini}></span> */}
+              {/* <span>Cada servicio derivado se cotiza por separado, según los requerimientos específicos de tu proyecto.</span> */}
             </div>
           </div>
 
