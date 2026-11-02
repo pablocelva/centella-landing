@@ -124,7 +124,7 @@ const shouldAnimate = filteredProjects.length >= 2;
               data-carousel-reverse
               title="Invertir dirección del carrusel"
             >
-              [INVERTIR ⇄]
+              [⇄]
             </button>
           </>
         )}
@@ -449,7 +449,8 @@ const shouldAnimate = filteredProjects.length >= 2;
         function onToggleClick() {
           isManualPaused = !isManualPaused;
           if (toggleBtn) {
-            toggleBtn.textContent = isManualPaused ? '[REANUDAR]' : '[PAUSA]';
+            // toggleBtn.textContent = isManualPaused ? '[▶]' : '[⏸]';
+            toggleBtn.textContent = isManualPaused ? '[▶]' : '[⏹]';
           }
         }
         if (toggleBtn) {
@@ -459,7 +460,7 @@ const shouldAnimate = filteredProjects.length >= 2;
         function onReverseClick() {
           direction = -direction;
           if (reverseBtn) {
-            reverseBtn.textContent = direction < 0 ? '[NORMAL ⇄]' : '[INVERTIR ⇄]';
+            reverseBtn.textContent = direction < 0 ? '[⇄]' : '[⇄]';
           }
         }
         if (reverseBtn) {
@@ -468,7 +469,7 @@ const shouldAnimate = filteredProjects.length >= 2;
 
         if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
           isManualPaused = true;
-          if (toggleBtn) toggleBtn.textContent = '[REANUDAR]';
+          if (toggleBtn) toggleBtn.textContent = '[(U+25B6)]';
         }
 
         // Animation Loop
