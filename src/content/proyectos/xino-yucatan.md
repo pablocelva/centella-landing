@@ -25,7 +25,7 @@ specs:
 featured: true
 order: 9
 ---
-
+<!-- 
 ## Proceso de Producción
 
-Producción pop con secuencias electrónicas vivaces, guitarras brillantes y procesamiento vocal impecable para plataformas de reproducción.
+Producción pop con secuencias electrónicas vivaces, guitarras brillantes y procesamiento vocal impecable para plataformas de reproducción. -->

@@ -25,7 +25,7 @@ specs:
 featured: true
 order: 2
 ---
-
+<!-- 
 ## Proceso de Producción
 
-Producción integral de álbum con un tratamiento detallado en las capas de guitarras eléctricas, bajos melódicos y líneas vocales características de la banda.
+Producción integral de álbum con un tratamiento detallado en las capas de guitarras eléctricas, bajos melódicos y líneas vocales características de la banda. -->

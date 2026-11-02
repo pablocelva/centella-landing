@@ -25,7 +25,7 @@ specs:
 featured: true
 order: 8
 ---
-
+<!-- 
 ## Proceso de Producción
 
-Trabajo de diseño acústico y espacio sonoro enfocado en la guitarra acústica de cuerdas de nylon y texturas ambientales envolventes.
+Trabajo de diseño acústico y espacio sonoro enfocado en la guitarra acústica de cuerdas de nylon y texturas ambientales envolventes. -->

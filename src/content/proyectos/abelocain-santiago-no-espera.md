@@ -25,7 +25,7 @@ specs:
 featured: true
 order: 6
 ---
-
+<!-- 
 ## Proceso de Producción
 
-Producción rítmica y mezcla de graves profundos para garantizar contundencia y definición sonora en sistemas de monitoreo y reproducción urbana.
+Producción rítmica y mezcla de graves profundos para garantizar contundencia y definición sonora en sistemas de monitoreo y reproducción urbana. -->

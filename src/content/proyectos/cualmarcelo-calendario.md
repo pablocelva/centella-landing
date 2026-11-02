@@ -4,7 +4,7 @@ artist: "Cualmarcelo"
 year: "2026"
 category: "Álbum LP"
 coverImage: "/covers/calendario-cualmarcelo.jpg"
-description: "Sencillo indie pop alternativo grabado y mezclado con enfoque de textura orgánica y calidez armónica."
+description: "Disco debut de Cualmarcelo, cantante de Cuales i Quienes, que presenta en Calendarios una búsqueda sonora y emocional profundamente personal. Entre el folk, la trova y el ambient, el álbum construye un paisaje íntimo de texturas y atmósferas, donde Temuco, sus memorias y las experiencias del autor se entrelazan para dar forma a una identidad propia, atravesada por el territorio y el paso del tiempo."
 serviceBadges:
   - slug: "produccion-musical"
     label: "Producción Musical"
@@ -25,7 +25,7 @@ specs:
 featured: true
 order: 1
 ---
-
+<!-- 
 ## Proceso de Producción
 
-Sesión de producción enfocada en capturar la vibra fresca del arreglo pop alternativo, logrando un balance instrumental nítido y voces presentes.
+Sesión de producción enfocada en capturar la vibra fresca del arreglo pop alternativo, logrando un balance instrumental nítido y voces presentes. -->

@@ -25,7 +25,7 @@ specs:
 featured: true
 order: 7
 ---
-
+<!-- 
 ## Proceso de Producción
 
-Grabación directa en cinta y procesamiento híbrido para rescatar la textura cruda y enérgica del formato en vivo de la agrupación.
+Grabación directa en cinta y procesamiento híbrido para rescatar la textura cruda y enérgica del formato en vivo de la agrupación. -->

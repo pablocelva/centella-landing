@@ -25,7 +25,7 @@ specs:
 featured: true
 order: 4
 ---
-
+<!-- 
 ## Proceso de Producción
 
-Grabación directa en sala buscando la interpretación vocal más emotiva y directa, complementada por arreglos sutiles de acompañamiento.
+Grabación directa en sala buscando la interpretación vocal más emotiva y directa, complementada por arreglos sutiles de acompañamiento. -->

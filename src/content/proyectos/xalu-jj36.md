@@ -4,10 +4,8 @@ artist: "Xalu"
 year: "2024"
 category: "Álbum LP"
 coverImage: "/covers/jj36-xalu.jpg"
-description: "Exploración de ritmos contemporáneos e ingeniería vocal procesada minuciosamente para un impacto dinámico en plataformas digitales."
+description: "Primer álbum de larga duración del artista nacional Xalu, radicado en Argentina. Un trabajo íntimo y honesto que transita por diversos sonidos y estilos, explorando influencias que van desde el R&B hasta el folclore."
 serviceBadges:
-  - slug: "edicion-audio"
-    label: "Edición de Audio"
   - slug: "mezcla"
     label: "Mezcla"
 streamingLinks:
@@ -19,13 +17,13 @@ specs:
   - label: "Formato Audio"
     value: "24-bit / 96kHz Master Hi-Res"
   - label: "Procesamiento"
-    value: "Edición Vocal Avanzada & Mezcla Dinámica"
+    value: "Mezcla"
   - label: "Estudio"
     value: "Estudio Centella"
 featured: true
 order: 3
 ---
-
+<!-- 
 ## Proceso de Producción
 
-Trabajo técnico centrado en la afinación de detalles rítmicos, alineación de micro-tiempos y mezcla espacial de elementos sintéticos y vocales.
+Trabajo técnico centrado en la afinación de detalles rítmicos, alineación de micro-tiempos y mezcla espacial de elementos sintéticos y vocales. -->
