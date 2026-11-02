@@ -34,7 +34,7 @@ const targetSlug = slug || id;
 
   <p class={styles.summary}>{summary}</p>
 
-  <ul class={styles.detailsList}>
+  <!-- <ul class={styles.detailsList}>
     {details.map(item => {
       const colonIndex = item.indexOf(':');
       const concept = colonIndex !== -1 ? item.slice(0, colonIndex).trim() : item;
@@ -46,7 +46,7 @@ const targetSlug = slug || id;
         </li>
       );
     })}
-  </ul>
+  </ul> -->
 
   {targetSlug && (
     <div class={styles.footer}>

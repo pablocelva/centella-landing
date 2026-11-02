@@ -36,7 +36,7 @@
 /* Wireframe Layout (Servicios.png): 2-Column Pairs */
 .pairGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 24px;
 }
 
@@ -82,7 +82,7 @@
 
 @media (max-width: 800px) {
   .pairGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
   .fullBanner {
     flex-direction: column;
@@ -91,6 +91,9 @@
 }
 
 @media (max-width: 600px) {
+  .pairGrid {
+    grid-template-columns: 1fr;
+  }
   .container {
     padding: 24px 16px 48px;
     gap: 24px;

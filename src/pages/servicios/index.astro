@@ -10,8 +10,8 @@ const activeServices = allServices
   .sort((a, b) => a.data.order - b.data.order);
 
 const servicePairs = [];
-for (let i = 0; i < activeServices.length; i += 2) {
-  servicePairs.push(activeServices.slice(i, i + 2));
+for (let i = 0; i < activeServices.length; i += 3) {
+  servicePairs.push(activeServices.slice(i, i + 3));
 }
 ---
 
