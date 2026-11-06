@@ -8,8 +8,8 @@ description: "Producción íntima y minimalista con énfasis en la voz principal
 serviceBadges:
   - slug: "produccion-musical"
     label: "Producción Musical"
-  - slug: "grabacion-direccion"
-    label: "Grabación & Dirección"
+  - slug: "mezcla"
+    label: "Mezcla"
 streamingLinks:
   - platform: "Spotify"
     url: "https://open.spotify.com/intl-es/album/7B3MM1zp3lzoe51bhj5285"

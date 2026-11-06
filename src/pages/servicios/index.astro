@@ -9,10 +9,10 @@ const activeServices = allServices
   .filter(servicio => servicio.data.active !== false)
   .sort((a, b) => a.data.order - b.data.order);
 
-const servicePairs = [];
-for (let i = 0; i < activeServices.length; i += 3) {
-  servicePairs.push(activeServices.slice(i, i + 3));
-}
+// Consultoría como servicio principal destacado en jerarquía visual
+const consultoriaService = activeServices.find(s => s.id.includes('consultoria'));
+// Otros servicios específicos (Producción y Mezcla) para el grid en 2 columnas
+const specificServices = activeServices.filter(s => !s.id.includes('consultoria'));
 ---
 
 <Layout
@@ -24,47 +24,83 @@ for (let i = 0; i < activeServices.length; i += 3) {
     <section class={styles.heroBanner} aria-labelledby="services-heading">
       <span class={styles.tag}>[03] SERVICIOS DE PRODUCCIÓN &amp; INGENIERÍA DE SONIDO</span>
       <h1 id="services-heading" class={styles.title}>
-        Servicios integrales de producción y procesamiento de audio para producciones discográficas.
+        Servicios integrales de producción musical, mezcla y acompañamiento artístico.
+        <!-- Servicios integrales de producción y procesamiento de audio para producciones discográficas. -->
       </h1>
+      <p class={styles.customQuoteText}>
+        *Te recomendamos agendar una sesión de <strong><a href="#consultoria-section">consultoría y evaluación</a></strong> de tu material para definir un presupuesto a medida según tus necesidades y objetivos.
+      </p>
     </section>
 
-    {servicePairs.map((pair, index) => (
-      <>
-        <!-- Grupo de Servicios -->
-        <section class={styles.pairGrid} aria-label={`Grupo de servicios ${index + 1}`}>
-          {pair.map(servicio => (
-            <ServiceCard
-              id={servicio.id}
-              slug={servicio.id}
-              number={servicio.data.number}
-              title={servicio.data.title}
-              summary={servicio.data.summary}
-              tagline={servicio.data.tagline}
-              details={servicio.data.details}
-              hasPlans={Boolean(servicio.data.plans && servicio.data.plans.length > 0)}
-            />
-          ))}
-        </section>
+    <!-- Servicios Específicos: Producción y Mezcla (2 Columnas) -->
+    {specificServices.length > 0 && (
+      <section class={styles.pairGrid} aria-label="Servicios de producción y mezcla">
+        {specificServices.map(servicio => (
+          <ServiceCard
+            id={servicio.id}
+            slug={servicio.id}
+            number={servicio.data.number}
+            title={servicio.data.title}
+            summary={servicio.data.summary}
+            tagline={servicio.data.tagline}
+            details={servicio.data.details}
+            hasPlans={Boolean(servicio.data.plans && servicio.data.plans.length > 0)}
+          />
+        ))}
+      </section>
+    )}
 
-        {/* {index === 0 && (
-          <div class={styles.fullBanner}>
-            <span class={styles.fullBannerText}>
-              FLUJO DE TRABAJO EN ESTUDIO &mdash; Pre-producción técnica, sesiones de captura, balance de mezcla y entrega de archivos finales para plataformas digitales.
-            </span>
-            <span class={styles.fullBannerMeta}>[01] TRABAJO PROFESIONAL</span>
-          </div>
-        )} */}
+    <!-- Servicio de Consultoría y Desarrollo (Row entero a ancho completo) -->
+    {consultoriaService && (
+      <section class={styles.featuredSection} aria-labelledby="consultoria-heading" id="consultoria-section">
+        <div class={styles.sectionHeader}>
+          <span class={styles.featuredNumber}>[{consultoriaService.data.number}]</span>
+          <span class={styles.featuredTagline}>{consultoriaService.data.tagline}</span>
+        </div>
 
-        {/* {index === 1 && (
-          <div class={styles.fullBanner}>
-            <span class={styles.fullBannerText}>
-              CALIDAD DE AUDIO &mdash; Archivos de alta resolución en 24-bit/96kHz con balance dinámico y claridad acústica.
-            </span>
-            <span class={styles.fullBannerMeta}>[02] CERO DISTORSIÓN</span>
+        <article class={styles.customQuoteBox}>
+          <div class={styles.customQuoteLeft}>
+            <div class={styles.customQuoteHeader}>
+              <span class={styles.customQuoteTag}>[PROPUESTA Y PLAN DE TRABAJO A MEDIDA]</span>
+              <h2 id="consultoria-heading" class={styles.customQuoteTitle}>
+                <a href={`/servicios/${consultoriaService.id}`} class={styles.titleLink}>
+                  {consultoriaService.data.title}
+                </a>
+              </h2>
+            </div>
+
+            <p class={styles.customQuoteText}>
+              {consultoriaService.data.summary}
+            </p>
+
+            {consultoriaService.data.note && (
+              <div class={styles.customQuoteNote}>
+                <span class={styles.bulletMini}></span>
+                <span>{consultoriaService.data.note}</span>
+              </div>
+            )}
           </div>
-        )} */}
-      </>
-    ))}
+
+          <div class={styles.customQuoteRight}>
+            <div class={styles.customQuoteAreas}>
+              <span class={styles.customQuoteAreasLabel}>SERVICIOS MODULARES A CONSIDERAR:</span>
+              <div class={styles.customQuoteTagsGrid}>
+                <span class={styles.serviceChip}>PRODUCCIÓN MUSICAL</span>
+                <span class={styles.serviceChip}>ARREGLOS Y COMPOSICIÓN</span>
+                <span class={styles.serviceChip}>SESIONES DE GRABACIÓN</span>
+                <span class={styles.serviceChip}>EDICIÓN DE AUDIO</span>
+                <span class={styles.serviceChip}>PRODUCCIÓN EJECUTIVA</span>
+                <span class={styles.serviceChip}>COORDINACIÓN EXTERNA</span>
+              </div>
+            </div>
+
+            <a href={`/servicios/${consultoriaService.id}`} class={styles.customQuoteBtn}>
+              [VER INFORMACIÓN DETALLADA &rarr;]
+            </a>
+          </div>
+        </article>
+      </section>
+    )}
 
     <!-- Banner Ancho Completo CTA -->
     <div class={styles.fullBanner}>

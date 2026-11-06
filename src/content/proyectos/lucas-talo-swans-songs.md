@@ -1,5 +1,5 @@
 ---
-title: "Swans songs"
+title: "Swans Songs"
 artist: "Lucas Taló"
 year: "2025"
 category: "EP"
@@ -8,8 +8,8 @@ description: "Composición introspectiva que integra guitarra acústica, paisaje
 serviceBadges:
   - slug: "produccion-musical"
     label: "Producción Musical"
-  - slug: "consultoria-sonido"
-    label: "Consultoría de Sonido"
+  - slug: "mezcla"
+    label: "Mezcla"
 streamingLinks:
   - platform: "Spotify"
     url: "https://open.spotify.com/intl-es/album/0uNdl9o9ml2OaGKbAJsdgS"

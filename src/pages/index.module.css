@@ -97,53 +97,102 @@
 }
 
 .serviceBtn {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  padding: 24px 22px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: 182px;
+  background-color: var(--bg-dark);
+  border: 1px solid var(--border-strong);
+  padding: 40px 28px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  justify-content: center;
+  text-align: center;
   text-decoration: none;
-  color: var(--text-main);
-  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+  color: var(--text-inverse);
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.serviceBtnBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.serviceBtnOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(16, 16, 16, 0.52) 0%, rgba(16, 16, 16, 0.36) 100%);
+  transition: opacity var(--transition-fast);
 }
 
 .serviceBtn:hover {
-  background-color: var(--bg-card-hover);
-  border-color: var(--border-strong);
   transform: translateY(-2px);
 }
 
-.serviceBtnLeft {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.serviceBtn:hover .serviceBtnBg {
+  transform: scale(1.05);
+}
+
+.serviceBtn:hover .serviceBtnOverlay {
+  opacity: 0.75;
 }
 
 .serviceBtnNumber {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  z-index: 2;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--text-light);
+  color: rgba(248, 247, 244, 0.88);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
 }
 
 .serviceBtnTitle {
-  font-size: 15px;
+  position: relative;
+  z-index: 2;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 1.3;
-  color: var(--text-main);
+  line-height: 1.35;
+  text-align: center;
+  max-width: 26ch;
+  color: var(--text-inverse);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
 }
 
 .serviceBtnArrow {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  z-index: 2;
   font-family: var(--font-mono);
   font-size: 16px;
-  color: var(--text-muted);
-  transition: transform var(--transition-fast), color var(--transition-fast);
+  color: var(--text-inverse);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  transition: transform var(--transition-fast);
 }
 
 .serviceBtn:hover .serviceBtnArrow {
   transform: translateX(4px);
-  color: var(--text-main);
+}
+
+@media (forced-colors: active) {
+  .serviceBtn {
+    border: 1px solid LinkText;
+  }
+  .serviceBtnBg,
+  .serviceBtnOverlay {
+    display: none;
+  }
 }
 
 /* Bloque 4: Banner CTA Final */
@@ -216,5 +265,9 @@
   .heroBanner {
     padding: 32px 20px;
     min-height: 220px;
+  }
+  .serviceBtn {
+    min-height: 148px;
+    padding: 36px 20px;
   }
 }

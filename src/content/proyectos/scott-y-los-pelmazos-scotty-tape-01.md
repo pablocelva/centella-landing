@@ -6,8 +6,8 @@ category: "EP"
 coverImage: "/covers/scott-y-los-pelmazos-scotty-tape-01-ep.jpeg"
 description: "EP de garage indie y lo-fi refinado, mezclado buscando saturación armónica sutil y dinámicas crudas y honestas."
 serviceBadges:
-  - slug: "grabacion-direccion"
-    label: "Grabación & Dirección"
+  - slug: "produccion-musical"
+    label: "Producción Musical"
   - slug: "mezcla"
     label: "Mezcla"
 streamingLinks:

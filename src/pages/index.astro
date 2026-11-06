@@ -11,6 +11,23 @@ const allServices = await getCollection('servicios');
 const activeServices = allServices
   .filter(s => s.data.active !== false)
   .sort((a, b) => a.data.order - b.data.order);
+
+const homeServiceBgMap: Record<string, string> = {
+  'produccion-musical':
+    'https://images.unsplash.com/photo-1701100629891-2f1aae1efed6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
+  mezcla:
+    'https://images.unsplash.com/photo-1509310202330-aec5af561c6b?q=80&w=1209&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
+  'consultoria-sonido':
+    'https://images.unsplash.com/photo-1621619054919-167f2fcf135c?q=80&w=1166&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
+};
+
+function getHomeServiceBg(id: string): string | undefined {
+  if (homeServiceBgMap[id]) return homeServiceBgMap[id];
+  if (id.includes('produccion')) return homeServiceBgMap['produccion-musical'];
+  if (id.includes('mezcla')) return homeServiceBgMap.mezcla;
+  if (id.includes('consultoria')) return homeServiceBgMap['consultoria-sonido'];
+  return undefined;
+}
 ---
 
 <Layout
@@ -37,7 +54,7 @@ const activeServices = allServices
     <ProjectsCarousel
       sectionNumber="02"
       tag={`[02] CATÁLOGO DISCOGRÁFICO // ${sortedProjects.length} PRODUCCIONES`}
-      title="Discografía y Trabajos Realizados en el Estudio"
+      title="Trabajos Destacados del Estudio"
     />
 
     <!-- Bloque 3: Servicios (Versión reducida como botones directos) -->
@@ -50,19 +67,31 @@ const activeServices = allServices
       </div>
 
       <div class={styles.serviceButtonsGrid}>
-        {activeServices.map(servicio => (
-          <a
-            href={`/servicios/${servicio.id}`}
-            class={styles.serviceBtn}
-            title={`Ver información sobre ${servicio.data.title}`}
-          >
-            <div class={styles.serviceBtnLeft}>
+        {activeServices.map(servicio => {
+          const bgImage = getHomeServiceBg(servicio.id);
+          return (
+            <a
+              href={`/servicios/${servicio.id}`}
+              class={styles.serviceBtn}
+            >
+              {bgImage && (
+                <>
+                  <img
+                    src={bgImage}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    class={styles.serviceBtnBg}
+                  />
+                  <span class={styles.serviceBtnOverlay} aria-hidden="true"></span>
+                </>
+              )}
               <span class={styles.serviceBtnNumber}>[{servicio.data.number}]</span>
               <span class={styles.serviceBtnTitle}>{servicio.data.title}</span>
-            </div>
-            <span class={styles.serviceBtnArrow}>&rarr;</span>
-          </a>
-        ))}
+              <span class={styles.serviceBtnArrow} aria-hidden="true">&rarr;</span>
+            </a>
+          );
+        })}
       </div>
     </section>
 
