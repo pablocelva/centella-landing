@@ -1,7 +1,9 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import ProjectsCarousel from '../../components/ProjectsCarousel.astro';
 import { getCollection, render } from 'astro:content';
+import { resolveCoverImage } from '../../utils/images';
 import styles from './proyecto.module.css';
 
 export async function getStaticPaths() {
@@ -15,6 +17,7 @@ export async function getStaticPaths() {
 const { proyecto } = Astro.props;
 const { data } = proyecto;
 const { Content } = await render(proyecto);
+const resolvedCover = resolveCoverImage(data.coverImage);
 ---
 
 <Layout
@@ -89,11 +92,29 @@ const { Content } = await render(proyecto);
         <span class={styles.showcaseTag}>[03] CARÁTULA OFICIAL // ARTWORK</span>
         
         <div style="margin: 20px 0; border: 1px solid var(--border-subtle); overflow: hidden; max-width: 380px; width: 100%; align-self: center;">
-          <img
-            src={data.coverImage}
-            alt={`Arte de portada para ${data.title}`}
-            style="width: 100%; height: auto; display: block;"
-          />
+          {resolvedCover ? (
+            <Image
+              src={resolvedCover}
+              alt={`Arte de portada para ${data.title}`}
+              width={760}
+              height={760}
+              format="webp"
+              quality={85}
+              loading="eager"
+              fetchpriority="high"
+              style="width: 100%; height: auto; display: block;"
+            />
+          ) : (
+            <img
+              src={data.coverImage}
+              alt={`Arte de portada para ${data.title}`}
+              width="760"
+              height="760"
+              loading="eager"
+              fetchpriority="high"
+              style="width: 100%; height: auto; display: block;"
+            />
+          )}
         </div>
 
         <div class={styles.showcaseFooter}>

@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { resolveCoverImage } from '../utils/images';
 import styles from './ProjectsCarousel.module.css';
 
 type Proyecto = CollectionEntry<'proyectos'>;
@@ -139,153 +141,239 @@ const shouldAnimate = filteredProjects.length >= 2;
     {shouldAnimate ? (
       <div class={styles.trackWrapper} data-carousel-wrapper>
         <div class={styles.track} data-carousel-track>
-          {/* Primary Set */}
+          {/* Primary Set (starts scrolled off-screen to the left) */}
           <div class={styles.itemGroup} data-carousel-group>
-            {displayProjects.map((project: Proyecto) => (
-              <a
-                href={`/proyectos/${project.id}`}
-                class={styles.card}
-                title={`${project.data.title} — ${project.data.artist}`}
-                draggable="false"
-              >
-                <div class={styles.imageWrapper}>
-                  <img
-                    src={project.data.coverImage}
-                    alt={`Portada de ${project.data.title} por ${project.data.artist}`}
-                    class={styles.coverImg}
-                    loading="lazy"
-                    draggable="false"
-                  />
-                  <div class={styles.hoverOverlay}>
-                    <span class={styles.overlayMeta}>
-                      {project.data.category} &bull; {project.data.year}
-                    </span>
-                    <span class={styles.overlayAction}>VER PROYECTO &rarr;</span>
+            {displayProjects.map((project: Proyecto) => {
+              const resolvedCover = resolveCoverImage(project.data.coverImage);
+              return (
+                <a
+                  href={`/proyectos/${project.id}`}
+                  class={styles.card}
+                  title={`${project.data.title} — ${project.data.artist}`}
+                  draggable="false"
+                >
+                  <div class={styles.imageWrapper}>
+                    {resolvedCover ? (
+                      <Image
+                        src={resolvedCover}
+                        alt={`Portada de ${project.data.title} por ${project.data.artist}`}
+                        width={440}
+                        height={440}
+                        format="webp"
+                        quality={80}
+                        class={styles.coverImg}
+                        loading="lazy"
+                        fetchpriority="low"
+                        draggable="false"
+                      />
+                    ) : (
+                      <img
+                        src={project.data.coverImage}
+                        alt={`Portada de ${project.data.title} por ${project.data.artist}`}
+                        width="440"
+                        height="440"
+                        class={styles.coverImg}
+                        loading="lazy"
+                        fetchpriority="low"
+                        decoding="async"
+                        draggable="false"
+                      />
+                    )}
+                    <div class={styles.hoverOverlay}>
+                      <span class={styles.overlayMeta}>
+                        {project.data.category} &bull; {project.data.year}
+                      </span>
+                      <span class={styles.overlayAction}>VER PROYECTO &rarr;</span>
+                    </div>
                   </div>
-                </div>
-                <div class={styles.cardInfo}>
-                  <h3 class={styles.artist}>{project.data.artist}</h3>
-                  <span class={styles.title}>{project.data.title}</span>
-                  <div class={styles.badgeRow}>
-                    {project.data.serviceBadges.slice(0, 2).map((badge: { slug: string; label: string }) => (
-                      <span class={styles.miniBadge}>[{badge.label}]</span>
-                    ))}
+                  <div class={styles.cardInfo}>
+                    <h3 class={styles.artist}>{project.data.artist}</h3>
+                    <span class={styles.title}>{project.data.title}</span>
+                    <div class={styles.badgeRow}>
+                      {project.data.serviceBadges.slice(0, 2).map((badge: { slug: string; label: string }) => (
+                        <span class={styles.miniBadge}>[{badge.label}]</span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </a>
-            ))}
+                </a>
+              );
+            })}
           </div>
 
-          {/* Duplicate Set 1 (Center Working Set) */}
+          {/* Duplicate Set 1 (Center Working Set visible on initial scrollLeft = W) */}
           <div class={styles.itemGroup} aria-hidden="true">
-            {displayProjects.map((project: Proyecto) => (
-              <a
-                href={`/proyectos/${project.id}`}
-                class={styles.card}
-                tabindex="-1"
-                title={`${project.data.title} — ${project.data.artist}`}
-                draggable="false"
-              >
-                <div class={styles.imageWrapper}>
-                  <img
-                    src={project.data.coverImage}
-                    alt=""
-                    class={styles.coverImg}
-                    loading="lazy"
-                    draggable="false"
-                  />
-                  <div class={styles.hoverOverlay}>
-                    <span class={styles.overlayMeta}>
-                      {project.data.category} &bull; {project.data.year}
-                    </span>
-                    <span class={styles.overlayAction}>VER PROYECTO &rarr;</span>
+            {displayProjects.map((project: Proyecto, idx: number) => {
+              const resolvedCover = resolveCoverImage(project.data.coverImage);
+              const isInitiallyHiddenSlide = idx >= 5;
+              return (
+                <a
+                  href={`/proyectos/${project.id}`}
+                  class={styles.card}
+                  tabindex="-1"
+                  title={`${project.data.title} — ${project.data.artist}`}
+                  draggable="false"
+                >
+                  <div class={styles.imageWrapper}>
+                    {resolvedCover ? (
+                      <Image
+                        src={resolvedCover}
+                        alt=""
+                        width={440}
+                        height={440}
+                        format="webp"
+                        quality={80}
+                        class={styles.coverImg}
+                        loading={isInitiallyHiddenSlide ? 'lazy' : 'eager'}
+                        fetchpriority={isInitiallyHiddenSlide ? 'low' : undefined}
+                        draggable="false"
+                      />
+                    ) : (
+                      <img
+                        src={project.data.coverImage}
+                        alt=""
+                        width="440"
+                        height="440"
+                        class={styles.coverImg}
+                        loading={isInitiallyHiddenSlide ? 'lazy' : 'eager'}
+                        fetchpriority={isInitiallyHiddenSlide ? 'low' : undefined}
+                        decoding="async"
+                        draggable="false"
+                      />
+                    )}
+                    <div class={styles.hoverOverlay}>
+                      <span class={styles.overlayMeta}>
+                        {project.data.category} &bull; {project.data.year}
+                      </span>
+                      <span class={styles.overlayAction}>VER PROYECTO &rarr;</span>
+                    </div>
                   </div>
-                </div>
-                <div class={styles.cardInfo}>
-                  <h3 class={styles.artist}>{project.data.artist}</h3>
-                  <span class={styles.title}>{project.data.title}</span>
-                  <div class={styles.badgeRow}>
-                    {project.data.serviceBadges.slice(0, 2).map((badge: { slug: string; label: string }) => (
-                      <span class={styles.miniBadge}>[{badge.label}]</span>
-                    ))}
+                  <div class={styles.cardInfo}>
+                    <h3 class={styles.artist}>{project.data.artist}</h3>
+                    <span class={styles.title}>{project.data.title}</span>
+                    <div class={styles.badgeRow}>
+                      {project.data.serviceBadges.slice(0, 2).map((badge: { slug: string; label: string }) => (
+                        <span class={styles.miniBadge}>[{badge.label}]</span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </a>
-            ))}
+                </a>
+              );
+            })}
           </div>
 
-          {/* Duplicate Set 2 */}
+          {/* Duplicate Set 2 (starts scrolled off-screen to the right) */}
           <div class={styles.itemGroup} aria-hidden="true">
-            {displayProjects.map((project: Proyecto) => (
-              <a
-                href={`/proyectos/${project.id}`}
-                class={styles.card}
-                tabindex="-1"
-                title={`${project.data.title} — ${project.data.artist}`}
-                draggable="false"
-              >
-                <div class={styles.imageWrapper}>
-                  <img
-                    src={project.data.coverImage}
-                    alt=""
-                    class={styles.coverImg}
-                    loading="lazy"
-                    draggable="false"
-                  />
-                  <div class={styles.hoverOverlay}>
-                    <span class={styles.overlayMeta}>
-                      {project.data.category} &bull; {project.data.year}
-                    </span>
-                    <span class={styles.overlayAction}>VER PROYECTO &rarr;</span>
+            {displayProjects.map((project: Proyecto) => {
+              const resolvedCover = resolveCoverImage(project.data.coverImage);
+              return (
+                <a
+                  href={`/proyectos/${project.id}`}
+                  class={styles.card}
+                  tabindex="-1"
+                  title={`${project.data.title} — ${project.data.artist}`}
+                  draggable="false"
+                >
+                  <div class={styles.imageWrapper}>
+                    {resolvedCover ? (
+                      <Image
+                        src={resolvedCover}
+                        alt=""
+                        width={440}
+                        height={440}
+                        format="webp"
+                        quality={80}
+                        class={styles.coverImg}
+                        loading="lazy"
+                        fetchpriority="low"
+                        draggable="false"
+                      />
+                    ) : (
+                      <img
+                        src={project.data.coverImage}
+                        alt=""
+                        width="440"
+                        height="440"
+                        class={styles.coverImg}
+                        loading="lazy"
+                        fetchpriority="low"
+                        decoding="async"
+                        draggable="false"
+                      />
+                    )}
+                    <div class={styles.hoverOverlay}>
+                      <span class={styles.overlayMeta}>
+                        {project.data.category} &bull; {project.data.year}
+                      </span>
+                      <span class={styles.overlayAction}>VER PROYECTO &rarr;</span>
+                    </div>
                   </div>
-                </div>
-                <div class={styles.cardInfo}>
-                  <h3 class={styles.artist}>{project.data.artist}</h3>
-                  <span class={styles.title}>{project.data.title}</span>
-                  <div class={styles.badgeRow}>
-                    {project.data.serviceBadges.slice(0, 2).map((badge: { slug: string; label: string }) => (
-                      <span class={styles.miniBadge}>[{badge.label}]</span>
-                    ))}
+                  <div class={styles.cardInfo}>
+                    <h3 class={styles.artist}>{project.data.artist}</h3>
+                    <span class={styles.title}>{project.data.title}</span>
+                    <div class={styles.badgeRow}>
+                      {project.data.serviceBadges.slice(0, 2).map((badge: { slug: string; label: string }) => (
+                        <span class={styles.miniBadge}>[{badge.label}]</span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </a>
-            ))}
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>
     ) : (
       <div class={styles.staticGrid}>
-        {filteredProjects.map((project: Proyecto) => (
-          <a
-            href={`/proyectos/${project.id}`}
-            class={styles.card}
-            title={`${project.data.title} — ${project.data.artist}`}
-          >
-            <div class={styles.imageWrapper}>
-              <img
-                src={project.data.coverImage}
-                alt={`Portada de ${project.data.title} por ${project.data.artist}`}
-                class={styles.coverImg}
-                loading="lazy"
-              />
-              <div class={styles.hoverOverlay}>
-                <span class={styles.overlayMeta}>
-                  {project.data.category} &bull; {project.data.year}
-                </span>
-                <span class={styles.overlayAction}>VER PROYECTO &rarr;</span>
+        {filteredProjects.map((project: Proyecto) => {
+          const resolvedCover = resolveCoverImage(project.data.coverImage);
+          return (
+            <a
+              href={`/proyectos/${project.id}`}
+              class={styles.card}
+              title={`${project.data.title} — ${project.data.artist}`}
+            >
+              <div class={styles.imageWrapper}>
+                {resolvedCover ? (
+                  <Image
+                    src={resolvedCover}
+                    alt={`Portada de ${project.data.title} por ${project.data.artist}`}
+                    width={440}
+                    height={440}
+                    format="webp"
+                    quality={80}
+                    class={styles.coverImg}
+                    loading="lazy"
+                  />
+                ) : (
+                  <img
+                    src={project.data.coverImage}
+                    alt={`Portada de ${project.data.title} por ${project.data.artist}`}
+                    width="440"
+                    height="440"
+                    class={styles.coverImg}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
+                <div class={styles.hoverOverlay}>
+                  <span class={styles.overlayMeta}>
+                    {project.data.category} &bull; {project.data.year}
+                  </span>
+                  <span class={styles.overlayAction}>VER PROYECTO &rarr;</span>
+                </div>
               </div>
-            </div>
-            <div class={styles.cardInfo}>
-              <h3 class={styles.artist}>{project.data.artist}</h3>
-              <span class={styles.title}>{project.data.title}</span>
-              <div class={styles.badgeRow}>
-                {project.data.serviceBadges.slice(0, 2).map((badge: { slug: string; label: string }) => (
-                  <span class={styles.miniBadge}>[{badge.label}]</span>
-                ))}
+              <div class={styles.cardInfo}>
+                <h3 class={styles.artist}>{project.data.artist}</h3>
+                <span class={styles.title}>{project.data.title}</span>
+                <div class={styles.badgeRow}>
+                  {project.data.serviceBadges.slice(0, 2).map((badge: { slug: string; label: string }) => (
+                    <span class={styles.miniBadge}>[{badge.label}]</span>
+                  ))}
+                </div>
               </div>
-            </div>
-          </a>
-        ))}
+            </a>
+          );
+        })}
       </div>
     )}
   </section>
@@ -293,13 +381,17 @@ const shouldAnimate = filteredProjects.length >= 2;
 
 <script is:inline>
   (function () {
-    function setupCarousels() {
+    function cleanupAllCarousels() {
       if (window.__centellaCarouselCleanups) {
         window.__centellaCarouselCleanups.forEach(function (cleanup) {
           try { cleanup(); } catch (e) {}
         });
       }
       window.__centellaCarouselCleanups = [];
+    }
+
+    function setupCarousels() {
+      cleanupAllCarousels();
 
       var carousels = document.querySelectorAll('[data-projects-carousel]');
       if (!carousels.length) return;
@@ -318,36 +410,52 @@ const shouldAnimate = filteredProjects.length >= 2;
         var isDragging = false;
         var isPointerDown = false;
         var isRealDrag = false;
+        var isInViewport = true;
         var direction = 1;
         var speed = 0.75;
+        var cachedGroupWidth = firstGroup.offsetWidth || 0;
 
         var dragResumeTimeout;
         var touchResumeTimeout;
 
-        function getGroupWidth() {
-          return firstGroup ? firstGroup.offsetWidth : 0;
-        }
-
         function initScrollPos() {
-          var W = getGroupWidth();
-          if (W > 0) {
-            if (wrapper.scrollLeft < W || wrapper.scrollLeft >= 2 * W) {
-              wrapper.scrollLeft = W;
+          cachedGroupWidth = firstGroup.offsetWidth || 0;
+          if (cachedGroupWidth > 0) {
+            if (wrapper.scrollLeft < cachedGroupWidth || wrapper.scrollLeft >= 2 * cachedGroupWidth) {
+              wrapper.scrollLeft = cachedGroupWidth;
             }
           }
         }
 
         initScrollPos();
-        var t1 = setTimeout(initScrollPos, 100);
-        var t2 = setTimeout(initScrollPos, 400);
+
+        var resizeObserver = null;
+        if ('ResizeObserver' in window) {
+          resizeObserver = new ResizeObserver(function () {
+            cachedGroupWidth = firstGroup.offsetWidth || 0;
+            if (cachedGroupWidth > 0 && (wrapper.scrollLeft < cachedGroupWidth || wrapper.scrollLeft >= 2 * cachedGroupWidth)) {
+              wrapper.scrollLeft = cachedGroupWidth;
+            }
+          });
+          resizeObserver.observe(firstGroup);
+        }
+
+        var intersectionObserver = null;
+        if ('IntersectionObserver' in window) {
+          intersectionObserver = new IntersectionObserver(function (entries) {
+            if (entries[0]) {
+              isInViewport = entries[0].isIntersecting;
+            }
+          });
+          intersectionObserver.observe(carousel);
+        }
 
         function normalizeScroll() {
-          var W = getGroupWidth();
-          if (W <= 0) return;
-          if (wrapper.scrollLeft >= 2 * W) {
-            wrapper.scrollLeft -= W;
-          } else if (wrapper.scrollLeft < W) {
-            wrapper.scrollLeft += W;
+          if (cachedGroupWidth <= 0) return;
+          if (wrapper.scrollLeft >= 2 * cachedGroupWidth) {
+            wrapper.scrollLeft -= cachedGroupWidth;
+          } else if (wrapper.scrollLeft < cachedGroupWidth) {
+            wrapper.scrollLeft += cachedGroupWidth;
           }
         }
 
@@ -356,7 +464,6 @@ const shouldAnimate = filteredProjects.length >= 2;
         }
         wrapper.addEventListener('scroll', onScroll, { passive: true });
 
-        // Pointer Drag Tracking
         var startX = 0;
         var startY = 0;
         var lastX = 0;
@@ -410,7 +517,6 @@ const shouldAnimate = filteredProjects.length >= 2;
         window.addEventListener('pointerup', stopDragging);
         window.addEventListener('pointercancel', stopDragging);
 
-        // Intercept click ONLY if it was a real drag
         function onClick(e) {
           if (isRealDrag) {
             e.preventDefault();
@@ -420,7 +526,6 @@ const shouldAnimate = filteredProjects.length >= 2;
         }
         wrapper.addEventListener('click', onClick, true);
 
-        // Mobile touch interaction
         function onTouchStart() {
           isTouching = true;
           if (touchResumeTimeout) clearTimeout(touchResumeTimeout);
@@ -433,7 +538,6 @@ const shouldAnimate = filteredProjects.length >= 2;
         wrapper.addEventListener('touchstart', onTouchStart, { passive: true });
         wrapper.addEventListener('touchend', onTouchEnd, { passive: true });
 
-        // Hover pauses auto-scroll on desktop
         function onPointerEnter(e) {
           if (e.pointerType === 'mouse') {
             isHovered = true;
@@ -447,11 +551,9 @@ const shouldAnimate = filteredProjects.length >= 2;
         wrapper.addEventListener('pointerenter', onPointerEnter);
         wrapper.addEventListener('pointerleave', onPointerLeave);
 
-        // Control buttons
         function onToggleClick() {
           isManualPaused = !isManualPaused;
           if (toggleBtn) {
-            // toggleBtn.textContent = isManualPaused ? '[▶]' : '[⏸]';
             toggleBtn.textContent = isManualPaused ? '[▶]' : '[⏹]';
           }
         }
@@ -471,10 +573,9 @@ const shouldAnimate = filteredProjects.length >= 2;
 
         if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
           isManualPaused = true;
-          if (toggleBtn) toggleBtn.textContent = '[(U+25B6)]';
+          if (toggleBtn) toggleBtn.textContent = '[▶]';
         }
 
-        // Animation Loop
         var lastTime = performance.now();
         var animFrameId;
 
@@ -482,9 +583,9 @@ const shouldAnimate = filteredProjects.length >= 2;
           var dt = Math.min((now - lastTime) / 1000, 0.1);
           lastTime = now;
 
-          var shouldAutoScroll = !isManualPaused && !isHovered && !isTouching && !isDragging;
+          var shouldAutoScroll = isInViewport && !isManualPaused && !isHovered && !isTouching && !isDragging;
 
-          if (shouldAutoScroll) {
+          if (shouldAutoScroll && cachedGroupWidth > 0) {
             var delta = speed * 60 * dt * direction;
             wrapper.scrollLeft += delta;
             normalizeScroll();
@@ -495,11 +596,10 @@ const shouldAnimate = filteredProjects.length >= 2;
 
         animFrameId = requestAnimationFrame(tick);
 
-        // Register cleanup for page navigation
         window.__centellaCarouselCleanups.push(function () {
           cancelAnimationFrame(animFrameId);
-          clearTimeout(t1);
-          clearTimeout(t2);
+          if (resizeObserver) resizeObserver.disconnect();
+          if (intersectionObserver) intersectionObserver.disconnect();
           if (dragResumeTimeout) clearTimeout(dragResumeTimeout);
           if (touchResumeTimeout) clearTimeout(touchResumeTimeout);
           wrapper.removeEventListener('scroll', onScroll);
@@ -518,12 +618,17 @@ const shouldAnimate = filteredProjects.length >= 2;
       });
     }
 
-    // Bind setup on both page-load and DOM events
-    document.addEventListener('astro:page-load', setupCarousels);
+    if (!window.__centellaCarouselInitialized) {
+      window.__centellaCarouselInitialized = true;
+      // Pause animation immediately on navigation start so View Transition snapshots don't compete with 60fps scroll mutations
+      document.addEventListener('astro:before-preparation', cleanupAllCarousels);
+      document.addEventListener('astro:page-load', setupCarousels);
+    }
+
     if (document.readyState === 'interactive' || document.readyState === 'complete') {
       setupCarousels();
     } else {
-      document.addEventListener('DOMContentLoaded', setupCarousels);
+      document.addEventListener('DOMContentLoaded', setupCarousels, { once: true });
     }
   })();
 </script>

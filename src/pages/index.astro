@@ -14,11 +14,11 @@ const activeServices = allServices
 
 const homeServiceBgMap: Record<string, string> = {
   'produccion-musical':
-    'https://images.unsplash.com/photo-1701100629891-2f1aae1efed6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
+    'https://images.unsplash.com/photo-1701100629891-2f1aae1efed6?q=75&w=760&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
   mezcla:
-    'https://images.unsplash.com/photo-1509310202330-aec5af561c6b?q=80&w=1209&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
+    'https://images.unsplash.com/photo-1509310202330-aec5af561c6b?q=75&w=760&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
   'consultoria-sonido':
-    'https://images.unsplash.com/photo-1621619054919-167f2fcf135c?q=80&w=1166&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
+    'https://images.unsplash.com/photo-1621619054919-167f2fcf135c?q=75&w=760&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
 };
 
 function getHomeServiceBg(id: string): string | undefined {
@@ -33,6 +33,7 @@ function getHomeServiceBg(id: string): string | undefined {
 <Layout
   title="Estudio Centella — Producción Musical & Mezcla en Chile"
   description="Estudio de producción musical, mezcla y edición de audio en Santiago, Chile."
+  preconnectUnsplash={true}
 >
   <div class={styles.container}>
     <!-- Bloque 1: Banner Superior Ancho Completo -->
@@ -79,6 +80,8 @@ function getHomeServiceBg(id: string): string | undefined {
                   <img
                     src={bgImage}
                     alt=""
+                    width="760"
+                    height="364"
                     loading="lazy"
                     decoding="async"
                     class={styles.serviceBtnBg}

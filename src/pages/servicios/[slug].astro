@@ -1,7 +1,9 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import ProjectsCarousel from '../../components/ProjectsCarousel.astro';
 import { getCollection, render } from 'astro:content';
+import { resolveCoverImage } from '../../utils/images';
 import styles from './servicio.module.css';
 
 export async function getStaticPaths() {
@@ -22,6 +24,7 @@ const plans = data.plans || [];
 const hasPlans = plans.length > 0;
 const hasMarkdownContent = Boolean(servicio.body && servicio.body.trim().length > 0);
 const serviceImage = data.image || '/covers/nostalgia-centella.jpg';
+const resolvedServiceImage = resolveCoverImage(serviceImage);
 ---
 
 <Layout
@@ -92,12 +95,29 @@ const serviceImage = data.image || '/covers/nostalgia-centella.jpg';
 
       <!-- Right Column: Studio / Production Image -->
       <div class={styles.imageCard}>
-        <img
-          src={serviceImage}
-          alt={`Entorno de producción para ${data.title}`}
-          class={styles.serviceImage}
-          loading="lazy"
-        />
+        {resolvedServiceImage ? (
+          <Image
+            src={resolvedServiceImage}
+            alt={`Entorno de producción para ${data.title}`}
+            width={900}
+            height={675}
+            format="webp"
+            quality={82}
+            loading="eager"
+            fetchpriority="high"
+            class={styles.serviceImage}
+          />
+        ) : (
+          <img
+            src={serviceImage}
+            alt={`Entorno de producción para ${data.title}`}
+            width="900"
+            height="675"
+            loading="eager"
+            fetchpriority="high"
+            class={styles.serviceImage}
+          />
+        )}
       </div>
     </div>
 

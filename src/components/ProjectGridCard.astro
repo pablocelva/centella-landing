@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import { resolveCoverImage } from '../utils/images';
 import styles from './ProjectGridCard.module.css';
 
 interface ServiceBadge {
@@ -14,6 +16,7 @@ interface Props {
   category: string;
   coverImage: string;
   serviceBadges?: ServiceBadge[];
+  index?: number;
 }
 
 const {
@@ -24,7 +27,12 @@ const {
   category,
   coverImage,
   serviceBadges = [],
+  index = 4,
 } = Astro.props;
+
+const resolvedCover = resolveCoverImage(coverImage);
+const isAboveFold = index < 4;
+const isPrimaryLcp = index === 0;
 ---
 
 <article class={styles.card} data-project-card data-category={category.toLowerCase()}>
@@ -35,12 +43,30 @@ const {
     aria-label={`Ver proyecto ${title} por ${artist}`}
   >
     <div class={styles.imageWrapper}>
-      <img
-        src={coverImage}
-        alt={`Carátula de ${title} por ${artist}`}
-        class={styles.coverImg}
-        loading="lazy"
-      />
+      {resolvedCover ? (
+        <Image
+          src={resolvedCover}
+          alt={`Carátula de ${title} por ${artist}`}
+          width={520}
+          height={520}
+          format="webp"
+          quality={82}
+          class={styles.coverImg}
+          loading={isAboveFold ? 'eager' : 'lazy'}
+          fetchpriority={isPrimaryLcp ? 'high' : undefined}
+        />
+      ) : (
+        <img
+          src={coverImage}
+          alt={`Carátula de ${title} por ${artist}`}
+          width="520"
+          height="520"
+          class={styles.coverImg}
+          loading={isAboveFold ? 'eager' : 'lazy'}
+          fetchpriority={isPrimaryLcp ? 'high' : undefined}
+          decoding="async"
+        />
+      )}
       <div class={styles.hoverOverlay}>
         <span class={styles.overlayMeta}>
           {category} &bull; {year}

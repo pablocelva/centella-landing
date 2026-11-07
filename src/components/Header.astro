@@ -33,6 +33,7 @@ const navItems = [
         return (
           <a
             href={item.href}
+            data-astro-prefetch="viewport"
             class:list={[styles.link, { [styles.active]: isActive }]}
           >
             {item.label}
@@ -93,67 +94,67 @@ const navItems = [
 </header>
 
 <script is:inline>
-  function setupHamburgerMenu() {
-    const toggleBtn = document.getElementById('hamburgerToggle');
-    const overlay = document.getElementById('mobileOverlay');
-    const textLabel = document.getElementById('hamburgerText');
+  (function () {
+    function resetMobileDrawer() {
+      const toggleBtn = document.getElementById('hamburgerToggle');
+      const overlay = document.getElementById('mobileOverlay');
+      const textLabel = document.getElementById('hamburgerText');
+      if (!toggleBtn || !overlay) return;
 
-    if (!toggleBtn || !overlay) return;
+      overlay.dataset.open = 'false';
+      overlay.style.display = 'none';
+      overlay.style.opacity = '0';
+      overlay.style.pointerEvents = 'none';
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      if (textLabel) textLabel.textContent = 'MENU';
+    }
 
-    overlay.style.display = 'none';
-    overlay.style.opacity = '0';
-    overlay.style.pointerEvents = 'none';
-    toggleBtn.setAttribute('aria-expanded', 'false');
-    if (textLabel) textLabel.textContent = 'MENU';
+    if (!window.__centellaHeaderInitialized) {
+      window.__centellaHeaderInitialized = true;
 
-    const freshBtn = toggleBtn.cloneNode(true);
-    toggleBtn.parentNode.replaceChild(freshBtn, toggleBtn);
+      document.addEventListener('click', (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
 
-    let isOpen = false;
+        const toggleBtn = target.closest('#hamburgerToggle');
+        if (toggleBtn) {
+          e.stopPropagation();
+          const overlay = document.getElementById('mobileOverlay');
+          const textLabel = document.getElementById('hamburgerText');
+          if (!overlay) return;
 
-    freshBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      isOpen = !isOpen;
-      const currentLabel = document.getElementById('hamburgerText');
-      if (isOpen) {
-        overlay.style.display = 'flex';
-        requestAnimationFrame(() => {
-          overlay.style.opacity = '1';
-          overlay.style.pointerEvents = 'auto';
-        });
-        freshBtn.setAttribute('aria-expanded', 'true');
-        if (currentLabel) currentLabel.textContent = 'CERRAR';
-      } else {
-        overlay.style.opacity = '0';
-        overlay.style.pointerEvents = 'none';
-        setTimeout(() => {
-          overlay.style.display = 'none';
-        }, 200);
-        freshBtn.setAttribute('aria-expanded', 'false');
-        if (currentLabel) currentLabel.textContent = 'MENU';
-      }
-    });
+          const isOpen = overlay.dataset.open === 'true';
+          if (!isOpen) {
+            overlay.dataset.open = 'true';
+            overlay.style.display = 'flex';
+            requestAnimationFrame(() => {
+              overlay.style.opacity = '1';
+              overlay.style.pointerEvents = 'auto';
+            });
+            toggleBtn.setAttribute('aria-expanded', 'true');
+            if (textLabel) textLabel.textContent = 'CERRAR';
+          } else {
+            overlay.dataset.open = 'false';
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+            setTimeout(() => {
+              if (overlay.dataset.open !== 'true') overlay.style.display = 'none';
+            }, 200);
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            if (textLabel) textLabel.textContent = 'MENU';
+          }
+          return;
+        }
 
-    const links = overlay.querySelectorAll('a');
-    links.forEach(link => {
-      link.addEventListener('click', () => {
-        isOpen = false;
-        overlay.style.opacity = '0';
-        overlay.style.pointerEvents = 'none';
-        setTimeout(() => {
-          overlay.style.display = 'none';
-        }, 200);
-        freshBtn.setAttribute('aria-expanded', 'false');
-        const currentLabel = document.getElementById('hamburgerText');
-        if (currentLabel) currentLabel.textContent = 'MENU';
+        const mobileLink = target.closest('#mobileOverlay a');
+        if (mobileLink) {
+          resetMobileDrawer();
+        }
       });
-    });
-  }
 
-  document.addEventListener('astro:page-load', setupHamburgerMenu);
-  if (document.readyState === 'interactive' || document.readyState === 'complete') {
-    setupHamburgerMenu();
-  } else {
-    document.addEventListener('DOMContentLoaded', setupHamburgerMenu);
-  }
+      document.addEventListener('astro:after-swap', resetMobileDrawer);
+    }
+
+    resetMobileDrawer();
+  })();
 </script>

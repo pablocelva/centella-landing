@@ -20,43 +20,31 @@ import styles from './ProjectFilter.module.css';
 
 <script is:inline>
   (function () {
-    function setupCategoryFilter() {
-      const filterBtns = document.querySelectorAll('[data-category-filter]');
-      const cards = document.querySelectorAll('[data-project-card]');
+    if (!window.__centellaFilterInitialized) {
+      window.__centellaFilterInitialized = true;
 
-      if (!filterBtns.length || !cards.length) return;
+      document.addEventListener('click', (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const btn = target.closest('[data-category-filter]');
+        if (!btn) return;
 
-      filterBtns.forEach(btn => {
-        const freshBtn = btn.cloneNode(true);
-        btn.parentNode.replaceChild(freshBtn, btn);
+        e.stopPropagation();
+        const selectedCategory = btn.getAttribute('data-category-filter');
 
-        freshBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const selectedCategory = freshBtn.getAttribute('data-category-filter');
+        document.querySelectorAll('[data-category-filter]').forEach(b => {
+          b.setAttribute('data-active', b === btn ? 'true' : 'false');
+        });
 
-          // Update active status across filter buttons
-          document.querySelectorAll('[data-category-filter]').forEach(b => {
-            b.setAttribute('data-active', b === freshBtn ? 'true' : 'false');
-          });
-
-          // Show/hide project cards according to selected category
-          document.querySelectorAll('[data-project-card]').forEach(card => {
-            const cardCat = (card.getAttribute('data-category') || '').toLowerCase();
-            if (selectedCategory === 'all' || cardCat.includes(selectedCategory)) {
-              card.style.display = '';
-            } else {
-              card.style.display = 'none';
-            }
-          });
+        document.querySelectorAll('[data-project-card]').forEach(card => {
+          const cardCat = (card.getAttribute('data-category') || '').toLowerCase();
+          if (selectedCategory === 'all' || cardCat.includes(selectedCategory)) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
         });
       });
-    }
-
-    document.addEventListener('astro:page-load', setupCategoryFilter);
-    if (document.readyState === 'interactive' || document.readyState === 'complete') {
-      setupCategoryFilter();
-    } else {
-      document.addEventListener('DOMContentLoaded', setupCategoryFilter);
     }
   })();
 </script>

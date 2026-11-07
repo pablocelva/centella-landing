@@ -4,6 +4,10 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://centella-estudio.example.com',
   compressHTML: true,
-  scopedStyleStrategy: 'attribute'
+  scopedStyleStrategy: 'attribute',
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover'
+  }
 });
 

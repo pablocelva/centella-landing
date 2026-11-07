@@ -48,7 +48,7 @@ const yearRange = minYear === maxYear ? `${minYear}` : `${minYear} \u2013 ${maxY
       <ProjectFilter />
 
       <div class={styles.projectsGrid}>
-        {sortedProjects.map((proyecto) => (
+        {sortedProjects.map((proyecto, index) => (
           <ProjectGridCard
             id={proyecto.id}
             title={proyecto.data.title}
@@ -57,6 +57,7 @@ const yearRange = minYear === maxYear ? `${minYear}` : `${minYear} \u2013 ${maxY
             category={proyecto.data.category}
             coverImage={proyecto.data.coverImage}
             serviceBadges={proyecto.data.serviceBadges}
+            index={index}
           />
         ))}
       </div>
